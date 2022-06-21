@@ -1,0 +1,24 @@
+1. Mail processing is quite slow
+2. design a admin page where we can add category, course, branch, handle post,comment and users
+3. working on add category panel
+<!-- 4. pagination on category -->
+<!-- 5. pre button is not working -->
+<!-- 6. reverse list on the page working but on pagination only not complete -->
+<!-- 7. work on pagination button -->
+8. course!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+9. make course saving form
+10. saving course data in admin controller
+11. how can we send object from view to controller without form
+
+Note ::: must do
+
+try to reverse list of data in course, category amd branch page
+
+-----------------------------------------------------------------------------
+admin pannel :
+
+apply register ang login page 
+valid user can login so make a module where super/main admin will add the another admin.
+---------------------------------------------
+saving post data with user and category
+and set file uploading path

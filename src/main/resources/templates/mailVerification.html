@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+
+<head>
+
+    <title>Insert title here</title>
+    <!-- bootsrtap cdn link coming from commonfragment.html file ************************ -->
+    <div th:insert="commonfragment :: bootstrap"></div>
+
+    <!-- mapping CSS -->
+    <link rel="stylesheet" th:href="@{/css/login.css}">
+
+    <script type="text/javascript"></script>
+</head>
+
+<body>
+
+    <div class="container-fluid">
+        <div class="container">
+
+            <!-- navbar fragment code coming from login page****************************** -->
+            <div th:replace="login :: header"> </div>
+
+
+
+            <!-- register form is going to start ****************************** -->
+
+            <div class="row">
+                <div class="card col-lg-4 offset-lg-4 my-4">
+                    
+                    <!-- erorr message showing -->
+                    <div class="alert alert-warning alert-dismissible fade show my-2" role="alert" th:hidden="${WrongOtp == null}">
+                        <strong>Sorry !</strong> <span th:text="${WrongOtp}"></span>
+                        <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                          <span aria-hidden="true">&times;</span>
+                        </button>
+                      </div>
+
+                    <div class="card-body">
+                        <div class="sign form-group text-center">
+                            <h4>Mail verification</h4>
+                        </div>
+
+                        <!-- form is starting************************************************************* -->
+                        <form action="#" th:action="@{/user/saveUser}" method="post">
+                            <div class="form-group">
+                                <label for="exampleInputEmail1">Mail verification code</label>
+                                <input class="form-control" name="otp" type="text" placeholder="4-digit code">
+                            </div>
+
+                            <div class="form-group ">
+                                <button type="submit" value="submit" class="btn btn-primary px-4 ">Verify</button>
+                            </div>
+
+                            <div class="form-group">
+                                <p style="line-height: 1.2;" class="text-secondary">
+                                    We just sent your authentication code via email to <span
+                                        class="font-italic font-weight-bold" th:text="${mail}"></span>
+                                </p>
+                            </div>
+
+                            <div class="form-group text-center">
+                                <p class="orline"><span>or</span></p>
+                                Didn't get OTP ? <a class="font-weight-bold" onclick="history.go(-1)" href="#">Sign up
+                                    again</a>
+                            </div>
+
+                        </form>
+                    </div>
+                </div>
+
+            </div>
+
+        </div>
+    </div>
+
+
+
+</body>
+
+</html>

@@ -1,0 +1,49 @@
+* {
+    margin: 0%;
+    padding: 0%;
+    box-sizing: border-box;
+    font-family: Verdana, Geneva, Tahoma, sans-serif;
+}
+
+
+
+.card {
+    margin-top: 10%;
+    box-shadow: 2px 2px 5px 2px rgb(187, 179, 179);
+
+}
+
+.row .card {
+    border-radius: 2%;
+}
+
+
+
+
+
+@media (max-width:600px) {
+    .card {
+        padding: 10px;
+        margin: 15px;
+        margin-top: 25%;
+    }
+
+}
+
+
+.form-group .form-control:focus {
+    border: 1px solid blue;
+}
+
+.form-group .form-control {
+    font-size: 15px;
+}
+
+.table-data{
+    background: #fff;
+}
+
+.dropdown-menu {
+    overflow-y:auto; 
+    max-height:50vh
+   }

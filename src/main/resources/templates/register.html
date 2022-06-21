@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+
+<head>
+    <title>Register</title>
+    <!-- bootsrtap cdn link coming from commonfragment.html file ************************ -->
+    <div th:insert="commonfragment :: bootstrap"></div>
+
+    <!-- mapping CSS -->
+    <link rel="stylesheet" th:href="@{/css/login.css}">
+    <link rel="stylesheet" th:href="@{/css/register.css}">
+    <script type="text/javascript"></script>
+
+</head>
+
+<body>
+
+    <div class="container-fluid">
+        <div class="container">
+
+            <!-- navbar fragment code coming from login page****************************** -->
+            <div th:replace="login :: header"> </div>
+
+
+            <!-- register form is going to start ****************************** -->
+
+            <div class="row">
+                <div class="card col-lg-4 offset-lg-4 my-4">
+
+                    <div class="card-body">
+                        <div class="sign form-group text-center">
+                            <h3> Hello <span class="text-primary">User</span></h3>
+                        </div>
+                        <div class="sign form-group pt-3 pb-1">
+                            <h5><b>Sign Up</b></h5>
+                            <p class="text-secondary">Stay updated on your Educational world</p>
+                        </div>
+                        <!-- form is starting************************************************************* -->
+                        <form action="#" name="form1" th:action="@{/user/otpVerify}" method="post" id="signup">
+                            <div class="form-group mb-2">
+                                <input class="form-control" id="username" name="firstName" type="text"
+                                    placeholder="Enter your name*">
+                                <small class="text-danger font-weight-bold" th:hidden="${errorMsg4 == null}"
+                                    th:text="${errorMsg4}"></small>
+                            </div>
+                            <div class="form-group mb-2">
+                                <input class="form-control" id="email" name="email" type="email"
+                                    placeholder="Email or Phone*">
+                                <small class="text-danger font-weight-bold" th:hidden="${errorMsg == null}"
+                                    th:text="${errorMsg}"></small>
+                                <small class="text-danger font-weight-bold" th:hidden="${errorMsg2 == null}"
+                                    th:text="${errorMsg2}"></small>
+
+                            </div>
+                            <div class="form-group password ">
+                                <input class="form-control" id="password" name="password" type="password" placeholder="Password (6 or more characters)*
+                                ">
+                                <p class="text-danger font-weight-bold text-wrap" th:hidden="${errorMsg3 == null}"
+                                    th:text="${errorMsg3}"></p>
+                            </div>
+
+                            <div class="form-group ">
+                                <button type="submit" id="submitbutton" value="submit" class="btn btn-primary px-4">Sign
+                                    up</button>
+                            </div>
+
+                            <!-- going on login page If user has already sign up  -->
+                            <div class="form-group text-center">
+                                <p class="orline"><span>or</span></p>
+                                Already on SandipBook? <a class="font-weight-bold" th:href="@{/}" href="#">Sign in</a>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+
+            </div>
+
+        </div>
+    </div>
+
+
+</body>
+
+</html>

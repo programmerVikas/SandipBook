@@ -1,0 +1,464 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+
+<head>
+    <!-- <meta http-equiv="X-UA-Compatible" content="IE=edge"> -->
+    <div th:insert="commonfragment :: bootstrap"></div>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.2/css/all.min.css" />
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+    <title>Home</title>
+
+    <!-- mapping CSS -->
+    <link rel="stylesheet" th:href="@{/css/postSpace/postHome.css}">
+
+</head>
+
+<body>
+
+    <div class="bg-light">
+
+        <div class="container">
+
+            <!-- navbar !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!-->
+            <nav class="navbar navbar-expand-lg navbar-light bg-light">
+                <a class="navbar-brand" href="#">
+                    <img class="img-fluid " src="/images/logo.png" alt="SANDIPBOOK">
+                </a>
+
+                <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNavAltMarkup"
+                    aria-controls="navbarNavAltMarkup" aria-expanded="false" aria-label="Toggle navigation">
+                    <span class="navbar-toggler-icon"></span>
+                </button>
+
+                <div class="collapse navbar-collapse " id="navbarNavAltMarkup">
+                    <div class="navbar-nav ml-auto">
+                        <a class="navbar-toggler text-center" href="#" style="border: none;">
+                            <img src="https://mdbcdn.b-cdn.net/img/Photos/new-templates/bootstrap-chat/ava2-bg.webp"
+                                class="rounded-circle img-fluid" style="width: 40px;" />
+                            <p class="font-weight-bold mt-1 mb-0">Profile</p>
+                        </a>
+                        <a class="nav-item nav-link btn btn-light mx-1 active" href="#">Home </a>
+
+                        <!-- printing only 7 list data in navbar -->
+                        <span
+                            th:each="index: ${#numbers.sequence(0, (#lists.size(navbarCategoryData)>6)?6:#lists.size(navbarCategoryData)-1)}">
+                            <a class=" nav-item nav-link btn btn-light mx-1" href="#"
+                                th:text="${#strings.capitalize(navbarCategoryData[index].categoryName)}"></a>
+                        </span>
+                        <span class="nav-item text-center dropdown" th:if="${#lists.size(navbarCategoryData)>7}">
+                            <a class="nav-link dropdown-toggle btn btn-light mx-1" href="#" id="navbarDropdownMenuLink"
+                                data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                More
+                            </a>
+                            <div class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
+                                <span th:each="index: ${#numbers.sequence(7, #lists.size(navbarCategoryData)-1)}">
+                                    <a class="dropdown-item" href="#"
+                                        th:text="${#strings.capitalize(navbarCategoryData[index].categoryName)}"></a>
+                                </span>
+                            </div>
+                        </span>
+                    </div>
+                </div>
+
+            </nav>
+            <!-- navbar Ending !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!-->
+        </div>
+    </div>
+
+    <!-- <div class="container-fluid mt-4" style="width: 100vw;"> -->
+
+    <div class="container mt-4 ">
+        <div class="row">
+            <div class="col-sm-3 ">
+                <!-- profile start -->
+
+                <div class="card bg-light user_profile" style="border-radius: 15px;">
+                    <div class="card-body text-center">
+                        <div class="mt-3 mb-3">
+                            <img src="https://mdbcdn.b-cdn.net/img/Photos/new-templates/bootstrap-chat/ava2-bg.webp"
+                                class="rounded-circle img-fluid" style="width: 100px;" />
+                        </div>
+                        <h6 class="mb-1">
+                            <a href="">Nidhi Jha</a>
+                        </h6>
+                        <p class="text-muted title">
+                            Fresher Java Developer || Java || Spring boot || MySql || Angular || Hibernate ||
+                            HTML
+                            || CSS || Good Communication Skill
+                        </p>
+                        <hr>
+                        <p class="title font-weight-bold text-muted prn">180205171004</p> <br>
+                        <p class="title font-weight-bold text-muted session">2018-22</p>
+                        <p class="title font-weight-bold text-muted prn">B.TECH</p>
+                        <p class="title font-weight-bold text-muted prn">Computer Science & Engineering</p>
+
+                        <hr>
+                    </div>
+                </div>
+                <!-- profile end -->
+            </div>
+            <div class="col-sm-6 p-0 ">
+                <!-- Post module has started -->
+
+                <!-- post module  started -->
+
+                <div class="card bg-light postInput mx-2">
+
+                    <div class="card-body">
+                        <div class="row align-items-center ">
+                            <div class="col col-sm-2  text-center ">
+                                <a class="" href="#">
+                                    <img src="https://mdbcdn.b-cdn.net/img/Photos/new-templates/bootstrap-chat/ava2-bg.webp"
+                                        class="rounded-circle img-fluid" style="width: 50px;" />
+                                </a>
+                            </div>
+                            <div class="col-9 col-sm text-left">
+                                <input class="form-control muted mt-1" aria-label="Large"
+                                    aria-describedby="inputGroup-sizing-sm" type="text"
+                                    placeholder="What's on your mind, Nidhi ?" readonly data-toggle="modal"
+                                    data-target="#exampleModal">
+                            </div>
+                        </div>
+
+                    </div>
+
+                </div>
+                <hr>
+
+                <!-- Modal has started!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!-->
+                <div class="modal fade" id="exampleModal" tabindex="-1" role="dialog"
+                    aria-labelledby="exampleModalLabel" aria-hidden="true">
+                    <div class="modal-dialog" role="document">
+                        <div class="modal-content">
+                            <form th:action="@{/post/savePost}" method="post" enctype="multipart/form-data">
+                                <div class="modal-header">
+                                    <!-- header!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!! -->
+                                    <h5 class="modal-title" id="exampleModalLabel">Create a post</h5>
+                                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                        <span aria-hidden="true">&times;</span>
+                                    </button>
+                                </div>
+                                <div class="modal-body">
+                                    <!-- content!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!! -->
+
+                                    <div class="row align-items-center">
+                                        <div class="col col-sm-2 text-center">
+                                            <a class="" href="#">
+                                                <img src="https://mdbcdn.b-cdn.net/img/Photos/new-templates/bootstrap-chat/ava2-bg.webp"
+                                                    class="rounded-circle img-fluid" style="width: 50px;" />
+                                            </a>
+                                        </div>
+                                        <div class="col-9 col-sm-10 text-left d-flex ">
+                                            <span class="category_dropdown">
+                                                <h6 class="mb-1">Nidhi Jha</h6>
+                                                <i class="fa fa-globe"></i>
+                                                <select class="selectInput pl-1" name="category" id="">
+                                                    <!-- <option selected value="">Public</option> -->
+                                                    <span th:each="categoryData : ${navbarCategoryData}">                                                        
+                                                    <option th:value="${categoryData.cId}" th:text="${categoryData.categoryName}">One</option>   
+                                                    </span>                                                
+                                                </select>
+                                            </span>
+                                        </div>
+                                    </div>
+                                    <!-- write something !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!! -->
+
+                                    <textarea class="form-control border border-light postTextArea" name="post"
+                                        aria-label="With textarea" rows="5"
+                                        placeholder="What do you want to talk about?"></textarea>
+                                    <img id="img_url" />
+                                    <!-- <embed id="img_url" /> -->
+                                    <!-- write something !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!! -->
+                                </div>
+                                <div class="row">
+                                    <div class="col">
+                                        <label class="ml-3">
+                                            <i for="actual-btn" class="fa fa-upload" aria-hidden="true"></i>
+                                            <span id="file-chosen" class="ml-1">Upload</span>
+                                            <input id="actual-btn" type="file" style="display: none;" name="file"
+                                                accept="image/*,.pdf" onChange="img_pathUrl(this);" />
+                                        </label>
+                                    </div>
+                                    <div class="col text-right">
+                                        <button type="submit" class="btn btn-primary mr-2 mb-2">Post</button>
+                                    </div>
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+                <!-- modal has ended !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!! -->
+                <!-- post module  ended -->
+
+                <!-- post content data is showing !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!! -->
+                <div class="card mb-3 ">
+
+                    <div class="row  m-2">
+                        <div class="col col-sm-2  text-left">
+                            <a class="" href="#">
+                                <img src="https://images.unsplash.com/photo-1535713875002-d1d0cf377fde?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxzZWFyY2h8Mnx8dXNlciUyMHByb2ZpbGV8ZW58MHx8MHx8&w=1000&q=80"
+                                    class="rounded-circle img-fluid" style="width: 50px;" />
+                            </a>
+                        </div>
+                        <div class="col-9 col-sm d-flex text-left ">
+                            <span class="mt-1" style="margin-left: -35px; font-size: small;">
+                                <h6 class=" mb-0 " style="color: rgb(90, 77, 77);">Vikas Kumar Roy</h6>
+                                <small class="text-secondary float-left" style="margin-top: -1px;">Computer Science &
+                                    Engineering
+                                    <br>
+                                    <span class="float-left" style="margin-top: -3px;">12-02-2022 at 08:30 pm</span>
+                                </small>
+                            </span>
+                        </div>
+                    </div>
+                    <!-- content of the post -->
+                    <p class="mx-3" style="font-size: 15px;">
+                        In today’s dynamic workplace, organizations need inspirational leadership and active management
+                        for optimal effectiveness. We need leaders to challenge the status quo, to inspire and motivate.
+                        But moreover, we also require managers to assist in developing and maintaining a smoothly
+                        functioning workplace.
+
+                        Still, they should also have strong leadership skills to maintain a positive work environment as
+                        well. Organizations provide their managers with legitimate authority to lead, but there is no
+                        assurance that they will lead. Managers are the de facto leader in their organization, but their
+                        mindset and qualities prevent some managers from becoming leaders.
+
+                        To successfully navigate all the disruptions in today’s fiercely competitive world, we need a
+                        new generation of purpose-driven leaders who can inspire people to believe that the impossible
+                        is possible, to believe they can achieve the unimaginable. We need leaders to stand up for their
+                        employees, to lead by example, and to create an environment that their employees love.
+                    </p>
+                    <!-- content of the post end -->
+
+                    <a
+                        href="https://images.template.net/wp-content/uploads/2015/07/One-Week-Notice-Letter-Sample-Template.jpg">
+                        <img class="w-100"
+                            src="https://images.template.net/wp-content/uploads/2015/07/One-Week-Notice-Letter-Sample-Template.jpg"
+                            alt="">
+                    </a>
+                    <!-- <embed class="w-100" id="img_url" style="height: 50vh;"  /> -->
+
+                    <!-- comment sections is here -->
+                    <div class="row align-items-center w-100">
+                        <div class="col p-2 text-right">
+                            <button class="btn btn-light " type="button"><i class="fa fa-thumbs-up"
+                                    aria-hidden="true"></i> Like
+                            </button>
+                        </div>
+                        <div class="col-5 p-2 text-left ">
+                            <button class="btn btn-light " type="button" data-toggle="collapse"
+                                data-target="#collapseExample" aria-expanded="false" aria-controls="collapseExample">
+                                <i class="fa fa-comment" aria-hidden="true"></i> Comment
+                            </button>
+                        </div>
+                        <div class="col text-right">
+                            <a data-toggle="collapse" data-target="#collapseExample" aria-expanded="false"
+                                aria-controls="collapseExample" style="cursor: pointer;">
+                                <small class="mr-0">99 comments</small>
+                            </a>
+                        </div>
+                    </div>
+
+                    <div class="collapse card postInput" id="collapseExample">
+                        <!-- <hr> -->
+                        <div class="row my-2 w-100">
+                            <div class="col col-sm-2  text-center ">
+                                <a class="" href="#">
+                                    <img src="https://mdbcdn.b-cdn.net/img/Photos/new-templates/bootstrap-chat/ava2-bg.webp"
+                                        class="rounded-circle img-fluid" style="width: 42px;" />
+                                </a>
+                            </div>
+                            <div class="col-9 col-sm text-left">
+                                <textarea class="form-control mt-1 commentTextArea" aria-label="Large"
+                                    aria-describedby="inputGroup-sizing-sm" type="text"
+                                    placeholder="Add a comment..."></textarea>
+                            </div>
+                        </div>
+
+                        <p class="mx-3">Comments</p>
+
+                        <div class="row w-100">
+                            <div class="col col-sm-2  text-center ">
+                                <a class="" href="#">
+                                    <img src="https://mdbcdn.b-cdn.net/img/Photos/new-templates/bootstrap-chat/ava2-bg.webp"
+                                        class="rounded-circle img-fluid" style="width: 42px;" />
+                                </a>
+                            </div>
+                            <div class="col-9 col-sm text-left">
+                                <div class="card my-1 p-2"
+                                    style="background-color: rgb(246 247 247); font-size: 14px; margin-left: -40px; margin-right: 35px; border-radius: 0px 10px 10px 20px;">
+                                    Lorem ipsum dolor sit amet consectetur adipisicing elit. Repellendus temporibus
+                                    mollitia tenetur nobis ducimus cupiditate inventore ipsum iure quas. Ad facilis quos
+                                    voluptate perspiciatis eum beatae corporis doloremque consectetur architecto!
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="row w-100">
+                            <div class="col col-sm-2  text-center ">
+                                <a class="" href="#">
+                                    <img src="https://mdbcdn.b-cdn.net/img/Photos/new-templates/bootstrap-chat/ava2-bg.webp"
+                                        class="rounded-circle img-fluid" style="width: 42px;" />
+                                </a>
+                            </div>
+                            <div class="col-9 col-sm text-left">
+                                <div class="card my-1 p-2"
+                                    style="background-color: rgb(246 247 247); font-size: 14px; margin-left: -40px; margin-right: 35px; border-radius: 0px 10px 10px 20px;">
+                                    Lorem ipsum dolor sit amet consectetur adipisicing elit. Repellendus temporibus
+                                    mollitia tenetur nobis ducimus cupiditate inventore ipsum iure quas. Ad facilis quos
+                                    voluptate perspiciatis eum beatae corporis doloremque consectetur architecto!
+                                </div>
+                            </div>
+                        </div>
+
+
+                    </div>
+                    <!-- comment sections is here !!!!!!!!!!!!!!!! -->
+                </div>
+                <!-- post content data is ending !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!! -->
+
+                <!-- post content data is showing !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!! -->
+                <div class="card mb-3 ">
+
+                    <div class="row  m-2">
+                        <div class="col col-sm-2  text-left">
+                            <a class="" href="#">
+                                <img src="https://images.unsplash.com/photo-1535713875002-d1d0cf377fde?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxzZWFyY2h8Mnx8dXNlciUyMHByb2ZpbGV8ZW58MHx8MHx8&w=1000&q=80"
+                                    class="rounded-circle img-fluid" style="width: 50px;" />
+                            </a>
+                        </div>
+                        <div class="col-9 col-sm d-flex text-left ">
+                            <span class="mt-1" style="margin-left: -35px; font-size: small;">
+                                <h6 class=" mb-0 " style="color: rgb(90, 77, 77);">Vikas Kumar Roy</h6>
+                                <small class="text-secondary float-left" style="margin-top: -1px;">Computer Science &
+                                    Engineering
+                                    <br>
+                                    <span class="float-left" style="margin-top: -3px;">12/02/2022 at 08:30 pm</span>
+                                </small>
+                            </span>
+                        </div>
+                    </div>
+                    <!-- content of the post -->
+                    <p class="mx-3" style="font-size: 15px;">
+                        In today’s dynamic workplace, organizations need inspirational leadership and active management
+                        for optimal effectiveness. We need leaders to challenge the status quo, to inspire and motivate.
+                        But moreover, we also require managers to assist in developing and maintaining a smoothly
+                        functioning workplace.
+
+                        Still, they should also have strong leadership skills to maintain a positive work environment as
+                        well. Organizations provide their managers with legitimate authority to lead, but there is no
+                        assurance that they will lead. Managers are the de facto leader in their organization, but their
+                        mindset and qualities prevent some managers from becoming leaders.
+
+                        To successfully navigate all the disruptions in today’s fiercely competitive world, we need a
+                        new generation of purpose-driven leaders who can inspire people to believe that the impossible
+                        is possible, to believe they can achieve the unimaginable. We need leaders to stand up for their
+                        employees, to lead by example, and to create an environment that their employees love.
+                    </p>
+                    <!-- content of the post end -->
+
+                    <a href="https://www.keepinspiring.me/wp-content/uploads/2013/05/uplifting-quotes-6.jpg">
+                        <img class="w-100"
+                            src="https://www.keepinspiring.me/wp-content/uploads/2013/05/uplifting-quotes-6.jpg" alt="">
+                    </a>
+                    <!-- <embed class="w-100" id="img_url" style="height: 50vh;"  /> -->
+
+                    <!-- comment sections is here -->
+                    <div class="row align-items-center w-100">
+                        <div class="col p-2 text-right">
+                            <button class="btn btn-light " type="button"><i class="fa fa-thumbs-up"
+                                    aria-hidden="true"></i> Like
+                            </button>
+                        </div>
+                        <div class="col-5 p-2 text-left ">
+                            <button class="btn btn-light " type="button" data-toggle="collapse"
+                                data-target="#collapseExample" aria-expanded="false" aria-controls="collapseExample">
+                                <i class="fa fa-comment" aria-hidden="true"></i> Comment
+                            </button>
+                        </div>
+                        <div class="col text-right">
+                            <a data-toggle="collapse" data-target="#collapseExample" aria-expanded="false"
+                                aria-controls="collapseExample" style="cursor: pointer;">
+                                <small class="mr-0">99 comments</small>
+                            </a>
+                        </div>
+                    </div>
+
+                    <div class="collapse card postInput" id="collapseExample">
+                        <!-- <hr> -->
+                        <div class="row my-2 w-100">
+                            <div class="col col-sm-2  text-center ">
+                                <a class="" href="#">
+                                    <img src="https://mdbcdn.b-cdn.net/img/Photos/new-templates/bootstrap-chat/ava2-bg.webp"
+                                        class="rounded-circle img-fluid" style="width: 42px;" />
+                                </a>
+                            </div>
+                            <div class="col-9 col-sm text-left">
+                                <textarea class="form-control mt-1 commentTextArea" aria-label="Large"
+                                    aria-describedby="inputGroup-sizing-sm" type="text"
+                                    placeholder="Add a comment..."></textarea>
+                            </div>
+                        </div>
+
+                        <p class="mx-3">Comments</p>
+
+                        <div class="row w-100">
+                            <div class="col col-sm-2  text-center ">
+                                <a class="" href="#">
+                                    <img src="https://mdbcdn.b-cdn.net/img/Photos/new-templates/bootstrap-chat/ava2-bg.webp"
+                                        class="rounded-circle img-fluid" style="width: 42px;" />
+                                </a>
+                            </div>
+                            <div class="col-9 col-sm text-left">
+                                <div class="card my-1 p-2"
+                                    style="background-color: rgb(246 247 247); font-size: 14px; margin-left: -40px; margin-right: 35px; border-radius: 0px 10px 10px 20px;">
+                                    Lorem ipsum dolor sit amet consectetur adipisicing elit. Repellendus temporibus
+                                    mollitia tenetur nobis ducimus cupiditate inventore ipsum iure quas. Ad facilis quos
+                                    voluptate perspiciatis eum beatae corporis doloremque consectetur architecto!
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="row w-100">
+                            <div class="col col-sm-2  text-center ">
+                                <a class="" href="#">
+                                    <img src="https://mdbcdn.b-cdn.net/img/Photos/new-templates/bootstrap-chat/ava2-bg.webp"
+                                        class="rounded-circle img-fluid" style="width: 42px;" />
+                                </a>
+                            </div>
+                            <div class="col-9 col-sm text-left">
+                                <div class="card my-1 p-2"
+                                    style="background-color: rgb(246 247 247); font-size: 14px; margin-left: -40px; margin-right: 35px; border-radius: 0px 10px 10px 20px;">
+                                    Lorem ipsum dolor sit amet consectetur adipisicing elit. Repellendus temporibus
+                                    mollitia tenetur nobis ducimus cupiditate inventore ipsum iure quas. Ad facilis quos
+                                    voluptate perspiciatis eum beatae corporis doloremque consectetur architecto!
+                                </div>
+                            </div>
+                        </div>
+
+
+                    </div>
+                    <!-- comment sections is here !!!!!!!!!!!!!!!! -->
+                </div>
+                <!-- post content data is ending !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!! -->
+
+
+
+                <!-- Post module has ended -->
+            </div>
+            <div class="col-sm-3 rightcolcard">
+                One of three columns
+            </div>
+        </div>
+    </div>
+    <!-- </div> -->
+
+    <script th:src="@{/js/postHome.js}"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+    <!-- <script>
+        
+   </script> -->
+
+</body>
+
+</html>

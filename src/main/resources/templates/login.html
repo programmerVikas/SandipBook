@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+
+<head>
+
+    <title>SandipBook</title>
+    <!-- bootsrtap cdn link coming from commonfragment.html file ************************ -->
+    <div th:insert="commonfragment :: bootstrap"></div>
+
+    <!-- mapping CSS -->
+    <link rel="stylesheet" th:href="@{/css/login.css}">
+    <!-- font awesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+
+
+</head>
+
+<body>
+
+    <div class="container-fluid">
+        <div class="container">
+
+            <!-- navbarLogo *********************************************************************-->
+
+            <nav class="navbar navbar-expand-lg" th:fragment="header">
+                <!-- <a class="navbar-brand my-3" href="#">Sandip<i class="fa fa-leanpub" aria-hidden="true"></i></a> -->
+                <img class="img-fluid my-3" src="/images/logo.png" alt="SANDIPBOOK">
+            </nav>
+
+            <div class="row">
+                <div class="card col-lg-4 offset-lg-4 my-4">
+
+                    <!-- success message showing %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%-->
+                    <div class="alert alert-warning alert-dismissible fade show mt-2" role="alert"
+                        th:hidden="${signUpSuccess == ''}">
+                        <strong>Great !</strong> <span th:text="${signUpSuccess}"></span>
+                        <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+                    </div>
+
+
+                    <div class="card-body">
+                        <div class="sign form-group pt-3 pb-1">
+                            <h3><b>Sign in</b></h3>
+                            <p class="text-secondary">Stay updated on your Educational world</p>
+                        </div>
+                        <!-- form is starting************************************************************* -->
+                        <form action="">
+                            <div class="form-group">
+                                <input class="form-control" name="email" type="text" placeholder="Email or Phone">
+                            </div>
+                            <div class="form-group">
+                                <input class="form-control" name="password" type="text" placeholder="Password">
+                            </div>
+
+                            <div class="form-group ">
+                                <button type="submit" class="btn btn-primary px-4 ">Sign in</button>
+                                <a href="#" class="">Forgot password?</a>
+                            </div>
+
+
+                            <div class="form-group register_sec">
+                                <p class="orline"><span>or</span></p>
+                                <a th:href="@{/register}" class="btn btn-success p-1">Register</a>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+                <!-- <div class="col-md-4 offset-md-4 ">
+                    <div class="form-group register_sec">
+                        <a th:href="@{/register/teacher}" class="btn btn-secondary">Register as a Teacher</a>
+                    </div>
+                </div> -->
+            </div>
+        </div>
+
+        <!-- @{/register/{userrole}(userrole=${'teacher'})} -->
+
+</body>
+
+</html>
+
+

@@ -1,0 +1,43 @@
+
+
+
+.card {
+    box-shadow: 2px 2px 5px 2px rgb(165, 158, 158);
+
+}
+
+.row .card {
+    border-radius: 2%;
+}
+
+@media (max-width:600px) {
+    .card {
+        padding: 10px;
+        margin: 15px;
+        margin-top: 25%;
+    }
+
+}
+
+
+.form-group .form-control:focus {
+    border: 1px solid blue;
+}
+
+.form-group .form-control {
+    font-size: 15px;
+}
+
+.table-data{
+    background: #fff;
+}
+
+.table tbody .course_desc{
+    width: 30vw;
+    height: 10vh;
+    overflow: auto;
+}
+
+/* .sign{
+    border-bottom: 2px dashed;
+} */

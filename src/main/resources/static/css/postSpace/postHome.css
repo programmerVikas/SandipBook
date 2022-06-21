@@ -1,0 +1,110 @@
+/* .container-fluid {
+    width: 100%;
+    height: 100vh;
+    background-color: rgb(253 247 247);
+    overflow: auto;
+} */
+
+
+.navbar img {
+    width: 6vw;
+}
+
+.container .title {
+    font-size: smaller;
+}
+
+.container .prn {
+    margin-top: -5px;
+}
+
+.container .session {
+    margin-top: -35px;
+}
+
+.postInput input {
+    margin-left: -25px;
+    border-radius: 20px;
+}
+
+
+.modal .category_dropdown {
+    margin-left: -20px;
+}
+
+.modal .globe_icon {
+    float: left;
+    /* margin-top: 7px; */
+    margin-left: 3px;
+}
+
+.modal .selectInput {
+    /* float: left; */
+    width: 80%;
+    /* border: none; */
+    padding-bottom: 3px;
+    outline: none;
+    height: 4vh;
+    border-radius: 30px;
+    font-size: 15px;
+}
+
+.modal .selectInput:hover {
+    background-color: rgb(247, 247, 247);
+}
+
+.modal textarea {
+    margin-top: 10px;
+}
+
+.modal textarea:focus {
+    border: none;
+    outline: none;
+    box-shadow: none;
+}
+
+
+.postInput input {
+    cursor: pointer;
+}
+
+#img_url {
+    position: relative;
+    width: 100%;
+    background-image: 100% 20%;
+
+}
+
+/* post content showing css!!!!!!!!!!!!!!!!!!!!!!!!!!!!!! */
+
+
+
+/* max-width:600 */
+@media (max-width:600px) {
+
+    .navbar img {
+        width: 25vw;
+    }
+
+    .user_profile, .rightcolcard {
+        display: none;
+    }
+
+    .postInput input {
+        width: 60vw;
+    }
+
+    .modal .category_dropdown {
+        margin-left: -30px;
+    }
+
+    .modal .selectInput {
+        width: 70%;
+
+    }
+
+
+    /* post content showing css!!!!!!!!!!!!!!!!!!!!!!!!!!!!!! */
+
+
+}

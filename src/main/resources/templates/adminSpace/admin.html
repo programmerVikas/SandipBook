@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+
+<html xmlns:th="http://www.thymeleaf.org">
+
+<head>
+    <meta charset="UTF-8">
+    <title>Insert title here</title>
+    <div th:insert="commonfragment :: bootstrap"></div>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.2/css/all.min.css" />
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+
+    <link rel="stylesheet" th:href="@{/css/admin/admin.css}">
+
+   
+</head>
+
+<body>
+
+    <div class="menu-wrapper">
+        <div class="sidebar-header">
+            <div class="sideBar" th:fragment="sideBar">
+                <div class="py-3"><img class="img-fluid" src="/images/logo.png" /></div>
+                <ul>
+                    <li th:class="${select}+' li'"><a th:href="@{/admin/home}"><i class="fas fa-home"></i>
+                            <span>Home</span></a></li>
+                    <li th:class="${select1}+' li'"><a th:href="@{/admin/branch/0}"><i class="fas fa-code-branch"></i>
+                            <span>Add
+                                Course's Branch</span></a></li>
+                    <li th:class="${select2}+' li'"><a th:href="@{/admin/course/0}"><i class="fab fa-discourse"></i> <span>Add
+                                Course</span></a></li>
+                    <li th:class="${select3}+' li'"><a th:href="@{/admin/category/0}"><i class="fas fa-plus"></i> <span>Add
+                                Post
+                                Category</span></a></li>
+                    <li class="li"><a><i class="fas fa-user"></i> <span>About us</span></a></li>
+                    <li class="li"><a><i class="fas fa-cog"></i> <span>Setting</span></a></li>
+                </ul> <span class="cross-icon"><i class="fas fa-times"></i></span>
+            </div>
+
+            <div class="backdrop"></div>
+            <div class="content">
+                <header class="py-3" th:fragment="sideBar2">
+                    <div class="menu-button" id='desktop'>
+                        <div></div>
+                        <div></div>
+                        <div></div>
+                    </div>
+                    <div class="menu-button" id='mobile'>
+                        <div></div>
+                        <div></div>
+                        <div></div>
+                    </div>
+                    <h1>SandipBook</h1>
+                    <img src=https://icons.veryicon.com/png/o/business/multi-color-financial-and-business-icons/user-139.png />
+                </header>
+                <div class="content-data">
+                    Lorem ipsum dolor, sit amet consectetur adipisicing elit. Ex atque doloremque culpa suscipit.
+                    Possimus neque repudiandae culpa ratione id reiciendis porro! Consectetur a eius dolor deleniti est
+                    veritatis non quos.
+                </div>
+            </div>
+        </div>
+
+    </div>
+
+
+    <script th:src="@{/js/admin.js}"></script>
+
+
+
+</body>
+
+</html>

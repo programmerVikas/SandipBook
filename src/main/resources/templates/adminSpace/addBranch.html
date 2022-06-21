@@ -1,0 +1,202 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+
+<head>
+    <!-- <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"> -->
+    <title>Add Branch</title>
+    <div th:insert="commonfragment :: bootstrap"></div>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.2/css/all.min.css" />
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+    <link rel="stylesheet" th:href="@{/css/admin/admin.css}">
+
+    <link rel="stylesheet" th:href="@{/css/admin/addBranch.css}">
+
+</head>
+
+<body>
+
+    <div class="menu-wrapper">
+        <div class="sidebar-header">
+            <!-- here adminspace is a folder where admin page in which sidebar fragment is available -->
+            <div th:replace="adminSpace/admin :: sideBar"> </div>
+            <div class="backdrop"></div>
+
+
+
+            <!-- content body has started !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!! -->
+            <div class="content">
+                <div th:replace="adminSpace/admin :: sideBar2"> </div>
+                <div class="content-data">
+
+                    <!-- success message showing !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!-->
+                    <div data-aos="fade-left" class=" alert alert-warning alert-dismissible fade show" role="alert"
+                        th:hidden="${branchMess == '' || branchMess == null}">
+                        <span th:text="${branchMess}"></span>
+                        <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+                    </div>
+
+                    <!-- collapsable card button !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!! -->
+                    <div class="text-left ">
+                        <input onclick="change()" class="btn btn-info" id="collapsebutton" value="Close course card "
+                            type="button" data-toggle="collapse" data-target="#collapseExample" aria-expanded="false"
+                            aria-controls="collapseExample">
+                        </input>
+                    </div>
+
+
+                    <!-- adding branch fields form started !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!-->
+                    <div class="row collapse show" id="collapseExample">
+                        <div class="card col-lg-4 offset-lg-4 mt-4">
+
+                            <div class="card-body">
+                                <div class="sign">
+                                    <h5><b th:text="${branchcardtitle}"></b></h5>
+                                </div>
+                                <!-- form is starting !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!! -->
+
+                                <form th:action="@{/admin/branch/saveBranch/}+${stayId}" class="mt-4" method="post">
+                                    <div class="form-group">
+                                        <input required class="form-control" name="branchName" type="text"
+                                            placeholder="Branch name" th:value="${branchData.branchName}">
+                                    </div>
+
+ 
+                                    <div class="form-group">
+                                        <select name="course" class="form-control">
+                                            <option selected
+                                                th:value="${branchData.course != null}? ${branchData.course.courseId}"
+                                                th:text="${branchData.course != null}? ${branchData.course.courseName}:'select branch course'">
+                                            </option>
+                                            <span th:each="courseData : ${courseDropDownList}">
+                                                <option th:value="${courseData.courseId}"
+                                                    th:text="${courseData.courseName}"></option>
+                                            </span>
+                                        </select>
+                                    </div>
+
+
+                                    <div class="form-group">
+                                        <textarea class="form-control" name="branchDesc"
+                                            id="exampleFormControlTextarea1" placeholder="Description..." rows="2"
+                                            th:text="${branchData.branchDesc}"></textarea>
+                                    </div>
+
+
+                                    <div class="text-right">
+                                        <button type="submit" class="btn btn-success px-4 mt-2">save</button>
+                                    </div>
+                                </form>
+                                <!-- form is ending !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!! -->
+                            </div>
+                        </div>
+                    </div>
+                    <!-- adding course fields form ended -->
+
+                    <!-- Showing category data -28-05-2022 !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!! -->
+
+                    <div class="table-data mt-5 table-responsive-sm">
+
+                        <!--showing branch data by course!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!  -->
+                        <div class="text-right my-2">
+                            <div class="btn-group dropleft">
+                                <button type="button" class="btn btn-secondary dropdown-toggle" data-toggle="dropdown"
+                                    aria-haspopup="true" aria-expanded="false">
+                                    Search Course Data
+                                </button>
+                                <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+                                    <span th:each="courseData : ${courseDropDownList}">
+                                        <a class="dropdown-item" th:href="'/admin/branch/'+${courseData.courseId}"
+                                            th:text="${courseData.courseName}"></a>
+                                    </span>
+                                </div>
+                            </div>
+                        </div>
+                        <!-- end showing branch data by course!!!!!!!!!!!!!!!!!!!!!!!!!!!!! -->
+
+                        <table class="table table-hover table-bordered" id="table">
+
+                            <thead class="thead-light">
+                                <tr class="text-center">
+                                    <th scope="col">Course</th>
+                                    <th scope="col">Branch</th>
+                                    <th scope="col">Description</th>
+                                    <th scope="col">Add At</th>
+                                    <th scope="col">Actions</th>
+                                </tr>
+                            </thead>
+                            <tbody id="tbody">
+                                <!-- !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!! -->
+                                <tr class="text-center ">
+                                    <th th:rowspan="${#lists.size(branchTableData)+1}" class="text-center align-middle"
+                                        th:text="${courseName}"></th>
+                                    <td class="bg-light text-info align-middle"
+                                        th:unless="${#lists.size(branchTableData) > 0}" colspan="4">It's empty here.
+                                    </td>
+                                </tr>
+
+                                <tr class="text-center" th:each="tablebranchData: ${branchTableData}">
+                                    <td class="text-uppercase align-middle" th:text="${tablebranchData.branchName}">
+                                    </td>
+                                    <td class="align-middle" th:text="${tablebranchData.branchDesc}"></td>
+                                    <td class="align-middle" th:text="${tablebranchData.addAt}"></td>
+                                    <td class="align-middle">
+
+                                        <div class="btn-group btn-group-toggle" data-toggle="buttons">
+                                            <label class="btn btn-info active">
+                                                <a
+                                                    th:href="'/admin/branch/update'+'/'+${stayId}+'?branchId='+${tablebranchData.branchId}+'&branchName='+${tablebranchData.branchName}+'&branchDesc='+${tablebranchData.branchDesc}+'&course='+${tablebranchData.course.courseId}"><i
+                                                        class="fa fa-edit text-light"></i></a>
+                                            </label>
+
+                                            <label class="btn btn-success">
+                                                <a
+                                                    th:href="'/admin/branch/delete/'+${stayId}+'/'+${tablebranchData.branchId}"><i
+                                                        class="fa fa-trash text-light" aria-hidden="true"></i></a>
+                                            </label>
+                                        </div>
+
+                                    </td>
+                                </tr>
+
+
+                            </tbody>
+                            <!-- !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!! -->
+                        </table>
+                    </div>
+
+
+                    <!-- Showing category data end !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!! -->
+
+
+
+                </div>
+            </div>
+
+        </div>
+
+    </div>
+
+
+    <!-- !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!! -->
+
+    <script th:src="@{/js/admin.js}"></script>
+    <script>
+
+        AOS.init();
+
+        // changing the text of collapse button
+        function change() {
+            var elem = document.getElementById("collapsebutton");
+            if (elem.value == "Open branch card ") elem.value = " Close branch card ";
+            else elem.value = "Open branch card ";
+        }
+
+
+    </script>
+
+</body>
+
+</html>
