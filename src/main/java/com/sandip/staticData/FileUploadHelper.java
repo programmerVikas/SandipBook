@@ -13,23 +13,26 @@ import org.springframework.web.multipart.MultipartFile;
 @Component
 public class FileUploadHelper {
 
-    public final String UPLOAD_Dir = new ClassPathResource("static/images").getFile().getAbsolutePath();
+    public final String UPLOAD_Dir = new ClassPathResource("static/uploadedImages").getFile().getAbsolutePath();
 
     public FileUploadHelper() throws IOException {
 
     }
 
-    public boolean uploadFile(MultipartFile file) {
+    public boolean uploadFile(MultipartFile file, String uniqueName) {
 
         boolean f = false;
 
         try {
 
-            Files.copy(file.getInputStream(), Paths.get(UPLOAD_Dir + File.separator + file.getOriginalFilename()),
-                    StandardCopyOption.ATOMIC_MOVE);
+            //for uniqye name for file 
+            String uniquefileName = uniqueName;
 
+            Files.copy(file.getInputStream(), Paths.get(UPLOAD_Dir + File.separator + uniquefileName.concat(
+                    file.getOriginalFilename())), StandardCopyOption.REPLACE_EXISTING);
+
+            f = true;
         } catch (Exception e) {
-            // TODO: handle exception
             System.out.println(e);
         }
 

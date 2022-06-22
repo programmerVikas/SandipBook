@@ -20,5 +20,6 @@ admin pannel :
 apply register ang login page 
 valid user can login so make a module where super/main admin will add the another admin.
 ---------------------------------------------
-saving post data with user and category
-and set file uploading path
+set user in post after login
+=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-----=-=-=-=-=-=-=-=-=-=-
+show the post data on page 

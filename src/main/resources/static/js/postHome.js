@@ -11,7 +11,16 @@ actualBtn.addEventListener('change', function(){
 // for showing file in popup modal while posting 
 
 function img_pathUrl(input){
+  if (input.files[0].type.match('image.*')) {
+    $('#pdf_url')[0].src = "";
     $('#img_url')[0].src = (window.URL ? URL : webkitURL).createObjectURL(input.files[0]);
+    $('#pdf_url')[0].style.display = 'none';
+  } else {
+    $('#pdf_url')[0].style.display = 'block';
+     $('#img_url')[0].src = "";
+    $('#pdf_url')[0].src = (window.URL ? URL : webkitURL).createObjectURL(input.files[0]).concat("#toolbar=0");
+  }
+    
 }
 // post text area auto height while writing
 $(".postTextArea").each(function () {

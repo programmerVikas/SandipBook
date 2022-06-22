@@ -99,7 +99,12 @@
             </div>
             <div class="col-sm-6 p-0 ">
                 <!-- Post module has started -->
-
+                <div class="alert alert-warning alert-dismissible fade show" role="alert" th:hidden="${posterrorMessage == '' || posterrorMessage == null}">
+                    <span th:text="${posterrorMessage}"></span>
+                    <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
                 <!-- post module  started -->
 
                 <div class="card bg-light postInput mx-2">
@@ -154,9 +159,10 @@
                                                 <i class="fa fa-globe"></i>
                                                 <select class="selectInput pl-1" name="category" id="">
                                                     <!-- <option selected value="">Public</option> -->
-                                                    <span th:each="categoryData : ${navbarCategoryData}">                                                        
-                                                    <option th:value="${categoryData.cId}" th:text="${categoryData.categoryName}">One</option>   
-                                                    </span>                                                
+                                                    <span th:each="categoryData : ${navbarCategoryData}">
+                                                        <option th:value="${categoryData.cId}"
+                                                            th:text="${categoryData.categoryName}">One</option>
+                                                    </span>
                                                 </select>
                                             </span>
                                         </div>
@@ -167,7 +173,7 @@
                                         aria-label="With textarea" rows="5"
                                         placeholder="What do you want to talk about?"></textarea>
                                     <img id="img_url" />
-                                    <!-- <embed id="img_url" /> -->
+                                    <embed id="pdf_url" class="w-100" height="425"/>
                                     <!-- write something !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!! -->
                                 </div>
                                 <div class="row">
