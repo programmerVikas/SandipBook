@@ -7,6 +7,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -64,7 +65,7 @@ public class AdminController {
         model.addAttribute("courseMess", courseMess);
 
         // pagination has started !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
-        Pageable pageable = PageRequest.of(page, ConstantData.PAGE_SIZE);
+        Pageable pageable = PageRequest.of(page, ConstantData.PAGE_SIZE, Sort.by("courseId").descending());
         Page<Course> pageCourseDataList = courseDaoImpl.gettingCourseData(pageable);
         // storing all course data in list from database
         List<Course> courseDataList = pageCourseDataList.getContent();
@@ -94,12 +95,10 @@ public class AdminController {
                                                           // in category-controller and showing on category page
         model.addAttribute("catDataname", catDataname); // setting value in input box for updation
         // pagination has started !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
-        Pageable pageable = PageRequest.of(page, ConstantData.PAGE_SIZE);
+        Pageable pageable = PageRequest.of(page, ConstantData.PAGE_SIZE, Sort.by("cId").descending());
         Page<Category> pagecategoryDataList = categoryDaoImpl.gettingCategoryData(pageable);
-        // storing all ategory data in list from database
-        List<Category> categoryDataList = pagecategoryDataList.getContent();
-
-        model.addAttribute("categoryData", categoryDataList);
+       
+        model.addAttribute("categoryData", pagecategoryDataList);
         model.addAttribute("currentPage", page);
         model.addAttribute("totalPages", pagecategoryDataList.getTotalPages());
         // pagination has ended!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!

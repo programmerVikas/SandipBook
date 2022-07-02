@@ -20,6 +20,18 @@ admin pannel :
 apply register ang login page 
 valid user can login so make a module where super/main admin will add the another admin.
 ---------------------------------------------
+pdf is not showing on mobile view
+  --> show defualt meaage if pdf is not available on server
 set user in post after login
+fix 'public' category, no one can delete and edit 'public' category
+every progile circle image should refer href on post page
+in comment section i'm saving comment but temporary user beacue login is designed yet same like post module don't have user
+apply button on post and comment that they can delete hos own post and only 
 =-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-----=-=-=-=-=-=-=-=-=-=-
-show the post data on page 
+working on comment section
+
+
+How to add active class in navbar
+working on like buttton
+working on third row
+working on logo

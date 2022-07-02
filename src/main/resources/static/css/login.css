@@ -75,15 +75,15 @@
     margin-bottom: 10px;
 }
 
-.orline{
-    width: 100%; 
-    text-align: center; 
-    border-bottom: 1px solid #000; 
+.orline {
+    width: 100%;
+    text-align: center;
+    border-bottom: 1px solid #000;
     line-height: 0.1em;
-    margin: 25px 0 25px; 
+    margin: 25px 0 25px;
 }
 
-.orline span { 
-    background:#fff; 
-    padding:0 10px; 
+.orline span {
+    background: #fff;
+    padding: 0 10px;
 }

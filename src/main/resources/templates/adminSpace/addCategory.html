@@ -90,12 +90,12 @@
 
                             <tbody id="tbody">
                                 <tr class="text-center"
-                                    th:each="category: ${#numbers.sequence(categoryData.size() - 1, 0, -1)}"
+                                    th:each="category: ${categoryData}"
                                     id="tabletr">
                                     <th class="align-middle" scope="row">#</th>
                                     <td class="align-middle" id="categoryDataList"
-                                        th:text="${categoryData[category].categoryName}"></td>
-                                    <td class="text-secondary align-middle" th:text="${categoryData[category].addAt}">
+                                        th:text="${category.categoryName}"></td>
+                                    <td class="text-secondary align-middle" th:text="${category.addAt}">
                                     </td>
 
 
@@ -103,13 +103,13 @@
                                         <div class="btn-group btn-group-toggle" data-toggle="buttons">
                                             <label class="btn btn-info active">
                                                 <a href=""
-                                                    th:href="'/admin/category/update/'+${categoryData[category].cId}+'/'+${categoryData[category].categoryName}+'/'+${currentPage}"><i
+                                                    th:href="'/admin/category/update/'+${category.cId}+'/'+${category.categoryName}+'/'+${currentPage}"><i
                                                         class="fa fa-edit text-light"></i></a>
                                             </label>
 
                                             <label class="btn btn-success">
                                                 <a href=""
-                                                    th:href="'/admin/category/delete/'+${categoryData[category].cId}+'/'+${currentPage}"><i
+                                                    th:href="'/admin/category/delete/'+${category.cId}+'/'+${currentPage}"><i
                                                         class="fa fa-trash text-light" aria-hidden="true"></i></a>
                                             </label>
                                         </div>

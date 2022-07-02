@@ -29,6 +29,11 @@ public class CategoryDaoImpl {
         return categoryDao.findAll(pageable);
     }
 
+    // getting first row value from database
+    public Category gettingDataByName(String name){
+        return categoryDao.findByCategoryName(name);
+    }
+ 
      // fetching category all data from database ********************************
      public List<Category> gettingCategory() {
         return categoryDao.findAll();

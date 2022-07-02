@@ -37,12 +37,14 @@
                                 class="rounded-circle img-fluid" style="width: 40px;" />
                             <p class="font-weight-bold mt-1 mb-0">Profile</p>
                         </a>
-                        <a class="nav-item nav-link btn btn-light mx-1 active" href="#">Home </a>
+                        <!-- <a class="nav-item nav-link btn btn-light mx-1 active" href="#">Home </a> -->
 
                         <!-- printing only 7 list data in navbar -->
                         <span
                             th:each="index: ${#numbers.sequence(0, (#lists.size(navbarCategoryData)>6)?6:#lists.size(navbarCategoryData)-1)}">
-                            <a class=" nav-item nav-link btn btn-light mx-1" href="#"
+                            <a th:classappend="${navbarCategoryData[index].categoryName == categoryName} ? 'active' : ''"
+                                class="nav-item nav-link btn btn-light mx-1 navbarActiveBtn"
+                                th:href="@{'/post/home/0/'+'?categoryName='+${navbarCategoryData[index].categoryName}}"
                                 th:text="${#strings.capitalize(navbarCategoryData[index].categoryName)}"></a>
                         </span>
                         <span class="nav-item text-center dropdown" th:if="${#lists.size(navbarCategoryData)>7}">
@@ -53,6 +55,7 @@
                             <div class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
                                 <span th:each="index: ${#numbers.sequence(7, #lists.size(navbarCategoryData)-1)}">
                                     <a class="dropdown-item" href="#"
+                                        th:href="@{'/post/home/0/'+'?categoryName='+${navbarCategoryData[index].categoryName}}"
                                         th:text="${#strings.capitalize(navbarCategoryData[index].categoryName)}"></a>
                                 </span>
                             </div>
@@ -99,7 +102,8 @@
             </div>
             <div class="col-sm-6 p-0 ">
                 <!-- Post module has started -->
-                <div class="alert alert-warning alert-dismissible fade show" role="alert" th:hidden="${posterrorMessage == '' || posterrorMessage == null}">
+                <div class="alert alert-warning alert-dismissible fade show" role="alert"
+                    th:hidden="${posterrorMessage == '' || posterrorMessage == null}">
                     <span th:text="${posterrorMessage}"></span>
                     <button type="button" class="close" data-dismiss="alert" aria-label="Close">
                         <span aria-hidden="true">&times;</span>
@@ -110,7 +114,7 @@
                 <div class="card bg-light postInput mx-2">
 
                     <div class="card-body">
-                        <div class="row align-items-center ">
+                        <!-- <div class="row align-items-center ">
                             <div class="col col-sm-2  text-center ">
                                 <a class="" href="#">
                                     <img src="https://mdbcdn.b-cdn.net/img/Photos/new-templates/bootstrap-chat/ava2-bg.webp"
@@ -123,6 +127,18 @@
                                     placeholder="What's on your mind, Nidhi ?" readonly data-toggle="modal"
                                     data-target="#exampleModal">
                             </div>
+                        </div> -->
+
+                        <div class="align-items-center" style="display: flex;">
+
+                            <a class="" href="#">
+                                <img src="https://mdbcdn.b-cdn.net/img/Photos/new-templates/bootstrap-chat/ava2-bg.webp"
+                                    class="rounded-circle img-fluid" style="width: 50px;" />
+                            </a>
+                            <input class="form-control muted ml-3" aria-label="Large"
+                                aria-describedby="inputGroup-sizing-sm" type="text"
+                                placeholder="What's on your mind, Nidhi ?" readonly data-toggle="modal"
+                                data-target="#exampleModal">
                         </div>
 
                     </div>
@@ -135,7 +151,8 @@
                     aria-labelledby="exampleModalLabel" aria-hidden="true">
                     <div class="modal-dialog" role="document">
                         <div class="modal-content">
-                            <form th:action="@{/post/savePost}" method="post" enctype="multipart/form-data">
+                            <form id="uploadForm" th:action="@{/post/savePost/0}+'?categoryName='+${categoryName}"
+                                method="post" enctype="multipart/form-data">
                                 <div class="modal-header">
                                     <!-- header!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!! -->
                                     <h5 class="modal-title" id="exampleModalLabel">Create a post</h5>
@@ -173,17 +190,22 @@
                                         aria-label="With textarea" rows="5"
                                         placeholder="What do you want to talk about?"></textarea>
                                     <img id="img_url" />
-                                    <embed id="pdf_url" class="w-100" height="425"/>
+                                    <embed id="pdf_url" class="w-100" height="425" />
                                     <!-- write something !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!! -->
                                 </div>
                                 <div class="row">
                                     <div class="col">
-                                        <label class="ml-3">
+                                        <label class="ml-3" style="cursor: pointer;">
                                             <i for="actual-btn" class="fa fa-upload" aria-hidden="true"></i>
                                             <span id="file-chosen" class="ml-1">Upload</span>
                                             <input id="actual-btn" type="file" style="display: none;" name="file"
-                                                accept="image/*,.pdf" onChange="img_pathUrl(this);" />
+                                                accept="image/*,.pdf" onChange="img_pathUrl(this); " />
                                         </label>
+
+                                        <!-- progress bar -->
+                                        <progress class="p-3 ml-2" id="pBar" value="0" max="100"
+                                            style="display: none;"></progress>
+
                                     </div>
                                     <div class="col text-right">
                                         <button type="submit" class="btn btn-primary mr-2 mb-2">Post</button>
@@ -194,55 +216,94 @@
                     </div>
                 </div>
                 <!-- modal has ended !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!! -->
+
+
+
+
+
+
+
                 <!-- post module  ended -->
-
                 <!-- post content data is showing !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!! -->
-                <div class="card mb-3 ">
+                <div class="card mb-3 paginationSecond" th:each="userPostData : ${postData}">
 
-                    <div class="row  m-2">
+                    <!-- <div class="row m-2">
                         <div class="col col-sm-2  text-left">
                             <a class="" href="#">
                                 <img src="https://images.unsplash.com/photo-1535713875002-d1d0cf377fde?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxzZWFyY2h8Mnx8dXNlciUyMHByb2ZpbGV8ZW58MHx8MHx8&w=1000&q=80"
                                     class="rounded-circle img-fluid" style="width: 50px;" />
                             </a>
                         </div>
-                        <div class="col-9 col-sm d-flex text-left ">
+                        <div class="col-9 col-sm-10 d-flex text-left ">
                             <span class="mt-1" style="margin-left: -35px; font-size: small;">
-                                <h6 class=" mb-0 " style="color: rgb(90, 77, 77);">Vikas Kumar Roy</h6>
-                                <small class="text-secondary float-left" style="margin-top: -1px;">Computer Science &
-                                    Engineering
+                                <h6 class=" mb-0 " style="color: rgb(90, 77, 77);"
+                                    th:text="${userPostData.user.firstName}"></h6>
+                                <small class="text-secondary float-left" style="margin-top: -1px;">
+                                    <span
+                                        th:text="${userPostData.user.branch == null} ? 'Complete your profile first !!':${userPostData.user.branch.branchName}"></span>
                                     <br>
-                                    <span class="float-left" style="margin-top: -3px;">12-02-2022 at 08:30 pm</span>
+                                    <span class="float-left" style="margin-top: -3px;"
+                                        th:text="${userPostData.postOn}"></span>
                                 </small>
                             </span>
                         </div>
+                    </div> -->
+
+
+                    <div class="m-3" style="display: flex;">
+                        <a class="" href="#">
+                            <img src="https://images.unsplash.com/photo-1535713875002-d1d0cf377fde?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxzZWFyY2h8Mnx8dXNlciUyMHByb2ZpbGV8ZW58MHx8MHx8&w=1000&q=80"
+                                class="rounded-circle img-fluid" style="width: 45px;" />
+                        </a>
+                        <div class="ml-2" style="line-height: 13px; font-size: small;">
+                            <h6 class=" mb-0" style="color: rgb(90, 77, 77);" th:text="${userPostData.user.firstName}">
+                            </h6>
+                            <small class="text-secondary"
+                                th:text="${userPostData.user.branch == null} ? 'Complete your profile first !!':${userPostData.user.branch.branchName}"></small>
+                            <br>
+                            <small class="text-secondary" th:text="${userPostData.postOn}"></small>
+                        </div>
                     </div>
+
+
+
                     <!-- content of the post -->
-                    <p class="mx-3" style="font-size: 15px;">
-                        In today’s dynamic workplace, organizations need inspirational leadership and active management
-                        for optimal effectiveness. We need leaders to challenge the status quo, to inspire and motivate.
-                        But moreover, we also require managers to assist in developing and maintaining a smoothly
-                        functioning workplace.
-
-                        Still, they should also have strong leadership skills to maintain a positive work environment as
-                        well. Organizations provide their managers with legitimate authority to lead, but there is no
-                        assurance that they will lead. Managers are the de facto leader in their organization, but their
-                        mindset and qualities prevent some managers from becoming leaders.
-
-                        To successfully navigate all the disruptions in today’s fiercely competitive world, we need a
-                        new generation of purpose-driven leaders who can inspire people to believe that the impossible
-                        is possible, to believe they can achieve the unimaginable. We need leaders to stand up for their
-                        employees, to lead by example, and to create an environment that their employees love.
-                    </p>
+                    <p class="mx-3" style="font-size: 15px;" th:text="${userPostData.post}"></p>
                     <!-- content of the post end -->
 
-                    <a
-                        href="https://images.template.net/wp-content/uploads/2015/07/One-Week-Notice-Letter-Sample-Template.jpg">
-                        <img class="w-100"
-                            src="https://images.template.net/wp-content/uploads/2015/07/One-Week-Notice-Letter-Sample-Template.jpg"
+                    <a th:if="${!#strings.containsIgnoreCase(''+userPostData.photo,'.pdf') && userPostData.photo != null}"
+                        target="_blank" th:href="('/uploadedImages/'+${userPostData.photo})"
+                        style="background: transparent url(https://miro.medium.com/max/1400/1*CsJ05WEGfunYMLGfsT2sXA.gif) no-repeat center; background-size: 70% 50%;">
+                        <img class="img-fluid w-100" th:src="'/uploadedImages/'+${userPostData.photo}"
+                            onerror="this.onerror=null; this.src='https://miro.medium.com/max/1400/1*zE2qnVTJehut7B8P2aMn3A.gif'"
                             alt="">
                     </a>
-                    <!-- <embed class="w-100" id="img_url" style="height: 50vh;"  /> -->
+
+
+                    <span class="embedfile" th:if="${#strings.containsIgnoreCase(''+userPostData.photo,'.pdf')}">
+
+                        <object th:if="${#strings.containsIgnoreCase(''+userPostData.photo,'.pdf')}" class="w-100"
+                            th:data="('/uploadedImages/'+${userPostData.photo}+'#toolbar=0')" type="application/pdf"
+                            height="500"
+                            style="background: transparent url(https://miro.medium.com/max/1400/1*CsJ05WEGfunYMLGfsT2sXA.gif) no-repeat center; background-size: 70% 50%;">
+                            <p class="p-3 ">Your web browser doesn't have a PDF plugin. <br>
+                                <!-- <b class="text-light" th:text="${userPostData.photo}"></b> <br> -->
+                                <b class="text-light "
+                                    th:text="${#strings.replace(userPostData.photo,#strings.substring(userPostData.photo, 0),#strings.substring(userPostData.photo, #strings.indexOf(userPostData.photo,'@Books')+6))}"></b>
+
+                                <br>
+                                <!-- <p ></p> -->
+                                <a class="btn btn-success mt-3"
+                                    th:href="('/uploadedImages/'+${userPostData.photo}+'#toolbar=0')">Click
+                                    here to
+                                    download the PDF file</a>
+                            </p>
+                        </object>
+
+                    </span>
+
+
+
 
                     <!-- comment sections is here -->
                     <div class="row align-items-center w-100">
@@ -252,22 +313,21 @@
                             </button>
                         </div>
                         <div class="col-5 p-2 text-left ">
-                            <button class="btn btn-light " type="button" data-toggle="collapse"
-                                data-target="#collapseExample" aria-expanded="false" aria-controls="collapseExample">
-                                <i class="fa fa-comment" aria-hidden="true"></i> Comment
+                            <button class="btn btn-light collapseComment" type="button"> <i class="fa fa-comment"></i>
+                                Comment
                             </button>
                         </div>
                         <div class="col text-right">
-                            <a data-toggle="collapse" data-target="#collapseExample" aria-expanded="false"
-                                aria-controls="collapseExample" style="cursor: pointer;">
-                                <small class="mr-0">99 comments</small>
+                            <a class="collapseComment2" style="cursor: pointer;">
+                                <small class="mr-0"> <span th:text="${#lists.size(userPostData.comments)}"></span>
+                                    comments</small>
                             </a>
                         </div>
                     </div>
 
-                    <div class="collapse card postInput" id="collapseExample">
+                    <div class="card postInput bg-light collapseExamples" style="display: none;">
                         <!-- <hr> -->
-                        <div class="row my-2 w-100">
+                        <!-- <div class="row my-2 w-100">
                             <div class="col col-sm-2  text-center ">
                                 <a class="" href="#">
                                     <img src="https://mdbcdn.b-cdn.net/img/Photos/new-templates/bootstrap-chat/ava2-bg.webp"
@@ -279,11 +339,30 @@
                                     aria-describedby="inputGroup-sizing-sm" type="text"
                                     placeholder="Add a comment..."></textarea>
                             </div>
-                        </div>
+                        </div> -->
+                        <form
+                            th:action="@{/comment/save/userComment}+'/'+${userPostData.postId}+'/'+${currentPage}+'?categoryName='+${categoryName}"
+                            method="post">
+                            <div class="card-body ">
+                                <span style="display: flex;">
+                                    <a class="" href="#">
+                                        <img src="https://mdbcdn.b-cdn.net/img/Photos/new-templates/bootstrap-chat/ava2-bg.webp"
+                                            class="rounded-circle img-fluid" style="width: 42px;" />
+                                    </a>
 
-                        <p class="mx-3">Comments</p>
+                                    <textarea class="mx-2 form-control mt-1 commentTextArea" name="comment"
+                                        aria-label="Large" aria-describedby="inputGroup-sizing-sm" type="text"
+                                        placeholder="Add a comment..."></textarea>
+                                </span>
+                                <span class="mr-2 mt-1" style="float: right;">
+                                    <button type="submit" disabled class="btn btn-info commentButton">Post</button>
+                                </span>
+                            </div>
 
-                        <div class="row w-100">
+                        </form>
+                        <p class="ml-4 mb-0">Comments</p>
+
+                        <!-- <div class="row w-100">
                             <div class="col col-sm-2  text-center ">
                                 <a class="" href="#">
                                     <img src="https://mdbcdn.b-cdn.net/img/Photos/new-templates/bootstrap-chat/ava2-bg.webp"
@@ -298,172 +377,116 @@
                                     voluptate perspiciatis eum beatae corporis doloremque consectetur architecto!
                                 </div>
                             </div>
-                        </div>
+                        </div> -->
 
-                        <div class="row w-100">
-                            <div class="col col-sm-2  text-center ">
+                        <div class="card-body">
+                            <span class="mb-0" style="display: flex;" th:each="commentData: ${userPostData.comments}">
                                 <a class="" href="#">
                                     <img src="https://mdbcdn.b-cdn.net/img/Photos/new-templates/bootstrap-chat/ava2-bg.webp"
                                         class="rounded-circle img-fluid" style="width: 42px;" />
                                 </a>
-                            </div>
-                            <div class="col-9 col-sm text-left">
-                                <div class="card my-1 p-2"
-                                    style="background-color: rgb(246 247 247); font-size: 14px; margin-left: -40px; margin-right: 35px; border-radius: 0px 10px 10px 20px;">
-                                    Lorem ipsum dolor sit amet consectetur adipisicing elit. Repellendus temporibus
-                                    mollitia tenetur nobis ducimus cupiditate inventore ipsum iure quas. Ad facilis quos
-                                    voluptate perspiciatis eum beatae corporis doloremque consectetur architecto!
+                                <div class=" p-2 mt-2 mx-2 w-100"
+                                    style="background-color: rgb(238 238 238); font-size: 14px; border-radius: 0px 10px 10px 20px;">
+                                    <p class="mb-0"><b th:text="${commentData.user.firstName}"></b></p>
+                                    <p class="mb-1" th:text="${commentData.comment}">
+                                        Lorem ipsum dolor sit amet consectetur adipisicing elit. Repellendus temporibus
+                                        mollitia tenetur nobis ducimus cupiditate inventore ipsum iure quas. Ad facilis
+                                        quos
+                                        voluptate perspiciatis eum beatae corporis doloremque consectetur
+                                        architecto!consectetur architecto!
+                                    </p>
+                                    <small class="mt-0 text-secondary" style="float: right;"
+                                        th:text="${commentData.commentAt}">27-Jun-2022 at 09:47 am</small>
                                 </div>
-                            </div>
-                        </div>
-
-
-                    </div>
-                    <!-- comment sections is here !!!!!!!!!!!!!!!! -->
-                </div>
-                <!-- post content data is ending !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!! -->
-
-                <!-- post content data is showing !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!! -->
-                <div class="card mb-3 ">
-
-                    <div class="row  m-2">
-                        <div class="col col-sm-2  text-left">
-                            <a class="" href="#">
-                                <img src="https://images.unsplash.com/photo-1535713875002-d1d0cf377fde?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxzZWFyY2h8Mnx8dXNlciUyMHByb2ZpbGV8ZW58MHx8MHx8&w=1000&q=80"
-                                    class="rounded-circle img-fluid" style="width: 50px;" />
-                            </a>
-                        </div>
-                        <div class="col-9 col-sm d-flex text-left ">
-                            <span class="mt-1" style="margin-left: -35px; font-size: small;">
-                                <h6 class=" mb-0 " style="color: rgb(90, 77, 77);">Vikas Kumar Roy</h6>
-                                <small class="text-secondary float-left" style="margin-top: -1px;">Computer Science &
-                                    Engineering
-                                    <br>
-                                    <span class="float-left" style="margin-top: -3px;">12/02/2022 at 08:30 pm</span>
-                                </small>
                             </span>
                         </div>
-                    </div>
-                    <!-- content of the post -->
-                    <p class="mx-3" style="font-size: 15px;">
-                        In today’s dynamic workplace, organizations need inspirational leadership and active management
-                        for optimal effectiveness. We need leaders to challenge the status quo, to inspire and motivate.
-                        But moreover, we also require managers to assist in developing and maintaining a smoothly
-                        functioning workplace.
-
-                        Still, they should also have strong leadership skills to maintain a positive work environment as
-                        well. Organizations provide their managers with legitimate authority to lead, but there is no
-                        assurance that they will lead. Managers are the de facto leader in their organization, but their
-                        mindset and qualities prevent some managers from becoming leaders.
-
-                        To successfully navigate all the disruptions in today’s fiercely competitive world, we need a
-                        new generation of purpose-driven leaders who can inspire people to believe that the impossible
-                        is possible, to believe they can achieve the unimaginable. We need leaders to stand up for their
-                        employees, to lead by example, and to create an environment that their employees love.
-                    </p>
-                    <!-- content of the post end -->
-
-                    <a href="https://www.keepinspiring.me/wp-content/uploads/2013/05/uplifting-quotes-6.jpg">
-                        <img class="w-100"
-                            src="https://www.keepinspiring.me/wp-content/uploads/2013/05/uplifting-quotes-6.jpg" alt="">
-                    </a>
-                    <!-- <embed class="w-100" id="img_url" style="height: 50vh;"  /> -->
-
-                    <!-- comment sections is here -->
-                    <div class="row align-items-center w-100">
-                        <div class="col p-2 text-right">
-                            <button class="btn btn-light " type="button"><i class="fa fa-thumbs-up"
-                                    aria-hidden="true"></i> Like
-                            </button>
-                        </div>
-                        <div class="col-5 p-2 text-left ">
-                            <button class="btn btn-light " type="button" data-toggle="collapse"
-                                data-target="#collapseExample" aria-expanded="false" aria-controls="collapseExample">
-                                <i class="fa fa-comment" aria-hidden="true"></i> Comment
-                            </button>
-                        </div>
-                        <div class="col text-right">
-                            <a data-toggle="collapse" data-target="#collapseExample" aria-expanded="false"
-                                aria-controls="collapseExample" style="cursor: pointer;">
-                                <small class="mr-0">99 comments</small>
-                            </a>
-                        </div>
-                    </div>
-
-                    <div class="collapse card postInput" id="collapseExample">
-                        <!-- <hr> -->
-                        <div class="row my-2 w-100">
-                            <div class="col col-sm-2  text-center ">
-                                <a class="" href="#">
-                                    <img src="https://mdbcdn.b-cdn.net/img/Photos/new-templates/bootstrap-chat/ava2-bg.webp"
-                                        class="rounded-circle img-fluid" style="width: 42px;" />
-                                </a>
-                            </div>
-                            <div class="col-9 col-sm text-left">
-                                <textarea class="form-control mt-1 commentTextArea" aria-label="Large"
-                                    aria-describedby="inputGroup-sizing-sm" type="text"
-                                    placeholder="Add a comment..."></textarea>
-                            </div>
-                        </div>
-
-                        <p class="mx-3">Comments</p>
-
-                        <div class="row w-100">
-                            <div class="col col-sm-2  text-center ">
-                                <a class="" href="#">
-                                    <img src="https://mdbcdn.b-cdn.net/img/Photos/new-templates/bootstrap-chat/ava2-bg.webp"
-                                        class="rounded-circle img-fluid" style="width: 42px;" />
-                                </a>
-                            </div>
-                            <div class="col-9 col-sm text-left">
-                                <div class="card my-1 p-2"
-                                    style="background-color: rgb(246 247 247); font-size: 14px; margin-left: -40px; margin-right: 35px; border-radius: 0px 10px 10px 20px;">
-                                    Lorem ipsum dolor sit amet consectetur adipisicing elit. Repellendus temporibus
-                                    mollitia tenetur nobis ducimus cupiditate inventore ipsum iure quas. Ad facilis quos
-                                    voluptate perspiciatis eum beatae corporis doloremque consectetur architecto!
-                                </div>
-                            </div>
-                        </div>
-
-                        <div class="row w-100">
-                            <div class="col col-sm-2  text-center ">
-                                <a class="" href="#">
-                                    <img src="https://mdbcdn.b-cdn.net/img/Photos/new-templates/bootstrap-chat/ava2-bg.webp"
-                                        class="rounded-circle img-fluid" style="width: 42px;" />
-                                </a>
-                            </div>
-                            <div class="col-9 col-sm text-left">
-                                <div class="card my-1 p-2"
-                                    style="background-color: rgb(246 247 247); font-size: 14px; margin-left: -40px; margin-right: 35px; border-radius: 0px 10px 10px 20px;">
-                                    Lorem ipsum dolor sit amet consectetur adipisicing elit. Repellendus temporibus
-                                    mollitia tenetur nobis ducimus cupiditate inventore ipsum iure quas. Ad facilis quos
-                                    voluptate perspiciatis eum beatae corporis doloremque consectetur architecto!
-                                </div>
-                            </div>
-                        </div>
 
 
                     </div>
                     <!-- comment sections is here !!!!!!!!!!!!!!!! -->
+
                 </div>
                 <!-- post content data is ending !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!! -->
-
-
-
                 <!-- Post module has ended -->
+
+                <!-- pagination !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!-->
+                <nav aria-label="Page navigation example" class="table-responsive d-flex justify-content-center my-2">
+                    <ul class="pagination m-1" th:if="${totalPages != 0}">
+                        <li th:if="${currentPage != 0}" class="page-item" title="First">
+                            <a class="page-link" href="#"
+                                th:href="@{'/post/home/'+${0}+'?categoryName='+${categoryName}}" aria-label="Previous">
+                                <span aria-hidden="true">&laquo;&laquo;</span>
+                                <span class="sr-only">First</span>
+                            </a>
+                        </li>
+                        <li th:if="${currentPage != 0}" class="page-item" title="Previous">
+                            <a class="page-link" href="#"
+                                th:href="@{'/post/home/'+${currentPage-1}+'?categoryName='+${categoryName}}"
+                                aria-label="Previous">
+                                <span aria-hidden="true">&laquo;</span>
+                                <span class="sr-only">Previous</span>
+                            </a>
+                        </li>
+
+
+
+                        <!-- numbering of pages!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!! -->
+                        <li th:classappend="${currentPage == i-1}?'active':''"
+                            th:each="i : ${#numbers.sequence(1,totalPages)}" class="page-item"><a class="page-link"
+                                th:href="@{'/post/home/'+${i-1}+'?categoryName='+${categoryName}}"><span
+                                    th:text="${i}"></span></a></li>
+
+
+
+
+                        <li th:if="${currentPage+1 != totalPages}" class="page-item" title="Next">
+                            <a class="page-link" href="#"
+                                th:href="@{'/post/home/'+${currentPage+1}+'?categoryName='+${categoryName}}"
+                                aria-label="Next">
+                                <span aria-hidden="true">&raquo;</span>
+                                <span class="sr-only">Next</span>
+                            </a>
+                        </li>
+
+
+
+
+                        <li th:if="${currentPage+1 != totalPages}" class="page-item" title="Last">
+                            <a class="page-link" href="#"
+                                th:href="@{'/post/home/'+${totalPages-1}+'?categoryName='+${categoryName}}"
+                                aria-label="Next">
+                                <span aria-hidden="true">&raquo;&raquo;</span>
+                                <span class="sr-only">Last</span>
+                            </a>
+                        </li>
+
+                    </ul>
+                    <span class="mt-5" th:unless="${totalPages != 0}">
+                        <img class="img-fluid"
+                            src="https://cdn.dribbble.com/users/888330/screenshots/2653750/empty_data_set.png" alt="">
+                    </span>
+                </nav>
+                <!-- pagination -->
+
+
+
+
+
+
             </div>
             <div class="col-sm-3 rightcolcard">
-                One of three columns
+
+                third row
+
             </div>
         </div>
     </div>
     <!-- </div> -->
 
+
     <script th:src="@{/js/postHome.js}"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
-    <!-- <script>
-        
-   </script> -->
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
 
 </body>
 
