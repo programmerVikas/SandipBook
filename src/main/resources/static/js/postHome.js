@@ -93,16 +93,39 @@ for (let i1 = 0; i1 < commentTextArea.length; i1++) {
 }
 // validating comment input box ==>> Ending -!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
 
+// like button !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+var likeButton = document.getElementsByClassName("likeButton");
+var iconLikeButton = document.getElementsByClassName("iconLikeButton");
 
+for (let i1 = 0; i1 < likeButton.length; i1++) {
+  $(likeButton[i1]).click(function () {
+    $(this).css({ "color": "blue", "box-shadow": "3px 3px #888888" });
+  })
+}
 
-// var navbarBtn = document.getElementsByClassName("navbarActiveBtn");
+// read more less code !!!!!!!!!!!!!!!!!!
+$(document).ready(function () {
+  var maxLength = 300;
+  $(".show-read-more").each(function () {
 
-// for (let i1 = 0; i1 < navbarBtn.length; i1++) {
+    var data = $(this).text();
 
-//   $(navbarBtn[i1]).click(function () {
-//     $(this).addClass("active");
-//   })
+    var tempDivElement = document.createElement("span");
+    // Set the HTML content with the given value
+    tempDivElement.innerHTML = data;
 
-// }
+    var myStr = tempDivElement.textContent;
 
-
+    if ($.trim(myStr).length > maxLength) {
+      var newStr = myStr.substring(0, maxLength);
+      var removedStr = myStr.substring(maxLength, $.trim(myStr).length);
+      $(this).empty().html(newStr);
+      $(this).append(' <a href="javascript:void(0);" class="read-more">read more...</a>');
+      $(this).append('<span class="more-text">' + removedStr + '</span>');
+    }
+  });
+  $(".read-more").click(function () {
+    $(this).siblings(".more-text").contents().unwrap();
+    $(this).remove();
+  });
+});

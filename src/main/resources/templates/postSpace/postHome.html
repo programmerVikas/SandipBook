@@ -54,7 +54,8 @@
                             </a>
                             <div class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
                                 <span th:each="index: ${#numbers.sequence(7, #lists.size(navbarCategoryData)-1)}">
-                                    <a class="dropdown-item" href="#"
+                                    <a th:classappend="${navbarCategoryData[index].categoryName == categoryName} ? 'active' : ''"
+                                        class="dropdown-item" href="#"
                                         th:href="@{'/post/home/0/'+'?categoryName='+${navbarCategoryData[index].categoryName}}"
                                         th:text="${#strings.capitalize(navbarCategoryData[index].categoryName)}"></a>
                                 </span>
@@ -227,29 +228,6 @@
                 <!-- post content data is showing !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!! -->
                 <div class="card mb-3 paginationSecond" th:each="userPostData : ${postData}">
 
-                    <!-- <div class="row m-2">
-                        <div class="col col-sm-2  text-left">
-                            <a class="" href="#">
-                                <img src="https://images.unsplash.com/photo-1535713875002-d1d0cf377fde?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxzZWFyY2h8Mnx8dXNlciUyMHByb2ZpbGV8ZW58MHx8MHx8&w=1000&q=80"
-                                    class="rounded-circle img-fluid" style="width: 50px;" />
-                            </a>
-                        </div>
-                        <div class="col-9 col-sm-10 d-flex text-left ">
-                            <span class="mt-1" style="margin-left: -35px; font-size: small;">
-                                <h6 class=" mb-0 " style="color: rgb(90, 77, 77);"
-                                    th:text="${userPostData.user.firstName}"></h6>
-                                <small class="text-secondary float-left" style="margin-top: -1px;">
-                                    <span
-                                        th:text="${userPostData.user.branch == null} ? 'Complete your profile first !!':${userPostData.user.branch.branchName}"></span>
-                                    <br>
-                                    <span class="float-left" style="margin-top: -3px;"
-                                        th:text="${userPostData.postOn}"></span>
-                                </small>
-                            </span>
-                        </div>
-                    </div> -->
-
-
                     <div class="m-3" style="display: flex;">
                         <a class="" href="#">
                             <img src="https://images.unsplash.com/photo-1535713875002-d1d0cf377fde?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxzZWFyY2h8Mnx8dXNlciUyMHByb2ZpbGV8ZW58MHx8MHx8&w=1000&q=80"
@@ -268,21 +246,21 @@
 
 
                     <!-- content of the post -->
-                    <p class="mx-3" style="font-size: 15px;" th:text="${userPostData.post}"></p>
+                    <p class="mx-3 mb-0 show-read-more" style="font-size: 15px;" th:text="${userPostData.post}"></p>
                     <!-- content of the post end -->
 
                     <a th:if="${!#strings.containsIgnoreCase(''+userPostData.photo,'.pdf') && userPostData.photo != null}"
                         target="_blank" th:href="('/uploadedImages/'+${userPostData.photo})"
                         style="background: transparent url(https://miro.medium.com/max/1400/1*CsJ05WEGfunYMLGfsT2sXA.gif) no-repeat center; background-size: 70% 50%;">
-                        <img class="img-fluid w-100" th:src="'/uploadedImages/'+${userPostData.photo}"
+                        <img class="img-fluid w-100 mb-0" th:src="'/uploadedImages/'+${userPostData.photo}"
                             onerror="this.onerror=null; this.src='https://miro.medium.com/max/1400/1*zE2qnVTJehut7B8P2aMn3A.gif'"
                             alt="">
                     </a>
 
 
-                    <span class="embedfile" th:if="${#strings.containsIgnoreCase(''+userPostData.photo,'.pdf')}">
+                    <span class="embedfile mb-0" th:if="${#strings.containsIgnoreCase(''+userPostData.photo,'.pdf')}">
 
-                        <object th:if="${#strings.containsIgnoreCase(''+userPostData.photo,'.pdf')}" class="w-100"
+                        <object th:if="${#strings.containsIgnoreCase(''+userPostData.photo,'.pdf')}" class="w-100 mb-0"
                             th:data="('/uploadedImages/'+${userPostData.photo}+'#toolbar=0')" type="application/pdf"
                             height="500"
                             style="background: transparent url(https://miro.medium.com/max/1400/1*CsJ05WEGfunYMLGfsT2sXA.gif) no-repeat center; background-size: 70% 50%;">
@@ -306,40 +284,31 @@
 
 
                     <!-- comment sections is here -->
-                    <div class="row align-items-center w-100">
-                        <div class="col p-2 text-right">
-                            <button class="btn btn-light " type="button"><i class="fa fa-thumbs-up"
-                                    aria-hidden="true"></i> Like
-                            </button>
-                        </div>
-                        <div class="col-5 p-2 text-left ">
-                            <button class="btn btn-light collapseComment" type="button"> <i class="fa fa-comment"></i>
-                                Comment
-                            </button>
-                        </div>
-                        <div class="col text-right">
-                            <a class="collapseComment2" style="cursor: pointer;">
-                                <small class="mr-0"> <span th:text="${#lists.size(userPostData.comments)}"></span>
-                                    comments</small>
-                            </a>
-                        </div>
+
+                    <div class="">
+                       <hr class="mt-0">
+                        <span class="mb-3" style="display: flex;">
+                            <button class="ml-2 btn btn-light likeButton" type="button"><i class="fa fa-thumbs-up iconLikeButton"
+                                aria-hidden="true"></i> Like
+                        </button>
+
+                        <button class="btn btn-light collapseComment ml-3" type="button"> <i class="fa fa-comment"></i>
+                            Comment
+                        </button>
+
+                       <span class="ml-auto">
+                        <a class="collapseComment2 mr-3" style="cursor: pointer;">
+                            <small> <span th:text="${#lists.size(userPostData.comments)}"></span>
+                                comments</small>
+                        </a>
+                       </span>
+                        </span>
+
+
                     </div>
 
                     <div class="card postInput bg-light collapseExamples" style="display: none;">
-                        <!-- <hr> -->
-                        <!-- <div class="row my-2 w-100">
-                            <div class="col col-sm-2  text-center ">
-                                <a class="" href="#">
-                                    <img src="https://mdbcdn.b-cdn.net/img/Photos/new-templates/bootstrap-chat/ava2-bg.webp"
-                                        class="rounded-circle img-fluid" style="width: 42px;" />
-                                </a>
-                            </div>
-                            <div class="col-9 col-sm text-left">
-                                <textarea class="form-control mt-1 commentTextArea" aria-label="Large"
-                                    aria-describedby="inputGroup-sizing-sm" type="text"
-                                    placeholder="Add a comment..."></textarea>
-                            </div>
-                        </div> -->
+                       
                         <form
                             th:action="@{/comment/save/userComment}+'/'+${userPostData.postId}+'/'+${currentPage}+'?categoryName='+${categoryName}"
                             method="post">
@@ -362,23 +331,6 @@
                         </form>
                         <p class="ml-4 mb-0">Comments</p>
 
-                        <!-- <div class="row w-100">
-                            <div class="col col-sm-2  text-center ">
-                                <a class="" href="#">
-                                    <img src="https://mdbcdn.b-cdn.net/img/Photos/new-templates/bootstrap-chat/ava2-bg.webp"
-                                        class="rounded-circle img-fluid" style="width: 42px;" />
-                                </a>
-                            </div>
-                            <div class="col-9 col-sm text-left">
-                                <div class="card my-1 p-2"
-                                    style="background-color: rgb(246 247 247); font-size: 14px; margin-left: -40px; margin-right: 35px; border-radius: 0px 10px 10px 20px;">
-                                    Lorem ipsum dolor sit amet consectetur adipisicing elit. Repellendus temporibus
-                                    mollitia tenetur nobis ducimus cupiditate inventore ipsum iure quas. Ad facilis quos
-                                    voluptate perspiciatis eum beatae corporis doloremque consectetur architecto!
-                                </div>
-                            </div>
-                        </div> -->
-
                         <div class="card-body">
                             <span class="mb-0" style="display: flex;" th:each="commentData: ${userPostData.comments}">
                                 <a class="" href="#">
@@ -398,6 +350,9 @@
                                     <small class="mt-0 text-secondary" style="float: right;"
                                         th:text="${commentData.commentAt}">27-Jun-2022 at 09:47 am</small>
                                 </div>
+                            </span>
+                            <span class="text-center text-secondary" th:unless="${#lists.size(userPostData.comments)} != 0">
+                                <p>There are no comments yet...</p>
                             </span>
                         </div>
 
