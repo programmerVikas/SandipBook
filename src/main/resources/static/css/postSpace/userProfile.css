@@ -1,0 +1,23 @@
+ .profileCoverCard {
+
+     /* height: 280px; */
+     /* border: none; */
+     background-image: url(https://coolbackgrounds.io/images/backgrounds/index/ranger-4df6c1b6.png);
+     background-position: center;
+     background-size: cover;
+     background-repeat: no-repeat;
+ }
+
+
+
+ /* max-width:600 */
+ /* @media (max-width:600px) {
+
+     
+
+
+ } */
+
+ .profile-header {
+    transform: translateY(5rem);
+}

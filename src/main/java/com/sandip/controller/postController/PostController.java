@@ -1,5 +1,6 @@
 package com.sandip.controller.postController;
 
+import java.security.Principal;
 import java.text.SimpleDateFormat;
 import java.time.LocalTime;
 import java.util.Date;
@@ -9,6 +10,8 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
+import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.ModelAttribute;
@@ -22,6 +25,7 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 import com.sandip.entity.User;
 import com.sandip.entity.UserPost;
 import com.sandip.service.CategoryDaoImpl;
+import com.sandip.service.UserDaoImpl;
 import com.sandip.service.UserPostImpl;
 import com.sandip.staticData.FileUploadHelper;
 
@@ -38,6 +42,9 @@ public class PostController {
     @Autowired
     private UserPostImpl userPostImpl;
 
+    @Autowired
+    private UserDaoImpl userDaoImpl;
+
     // @Autowired
     // private User user;
 
@@ -45,10 +52,12 @@ public class PostController {
     public String postHomePage(@PathVariable("page") Integer page,
             @RequestParam(required = false, name = "posterrorMessage") String posterrorMessage,
             @RequestParam(required = false, name = "categoryName") String categoryName,
-            Model model) {
+            Model model, Principal principal) {
 
-        // List<UserPost> findByCategoryData =
-        // userPostImpl.findByCategoryData(categoryDaoImpl.gettingDataByName("public"));
+        // getting current login user
+        User logUser = userDaoImpl.userByEmail(principal.getName());
+        model.addAttribute("logUser", logUser);
+
 
         // pagination has started !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
         Pageable pageable = PageRequest.of(page, 10, Sort.by("postId").descending());
@@ -73,7 +82,7 @@ public class PostController {
     public String savePostData(@PathVariable("page") Integer page, @ModelAttribute UserPost userPost,
             @RequestParam("file") MultipartFile file,
             @RequestParam(required = false, name = "categoryName") String categoryName,
-            RedirectAttributes redirectAttributes) {
+            RedirectAttributes redirectAttributes, Principal principal) {
 
         if (userPost.getPost().isEmpty() && file.isEmpty()) {
             redirectAttributes.addAttribute("posterrorMessage", "Invalid Data....");
@@ -88,8 +97,9 @@ public class PostController {
         userPost.setPostOn(formattedDate);
 
         // setting id in user temporary
+        User logUser = userDaoImpl.userByEmail(principal.getName()); //getting loing user and setting in user
         User um = new User();
-        um.setUserId(273);
+        um.setUserId(logUser.getUserId());
         userPost.setUser(um);
 
         if (!file.isEmpty()) {

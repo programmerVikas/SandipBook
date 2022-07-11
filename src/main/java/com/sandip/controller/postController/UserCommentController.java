@@ -1,5 +1,6 @@
 package com.sandip.controller.postController;
 
+import java.security.Principal;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 
@@ -16,6 +17,7 @@ import com.sandip.entity.User;
 import com.sandip.entity.UserComment;
 import com.sandip.entity.UserPost;
 import com.sandip.service.UserCommentDaoImpl;
+import com.sandip.service.UserDaoImpl;
 
 @Controller
 @RequestMapping("/comment")
@@ -24,10 +26,18 @@ public class UserCommentController {
     @Autowired
     private UserCommentDaoImpl userCommentDaoImpl;
 
+    @Autowired
+    private UserDaoImpl userDaoImpl;
+
     @PostMapping("/save/userComment/{postId}/{page}")
     public String saveUserCommentData(@PathVariable("postId") Long postId, @PathVariable("page") Long page,
             @RequestParam(required = false, name = "categoryName") String categoryName,
-            @ModelAttribute("UserComment") UserComment userComment, RedirectAttributes redirectAttributes) {
+            @ModelAttribute("UserComment") UserComment userComment, RedirectAttributes redirectAttributes,
+            Principal principal) {
+
+
+        // getting current login user
+        User logUser = userDaoImpl.userByEmail(principal.getName());
 
         // setting postId in userPost
         UserPost userPost = new UserPost();
@@ -39,7 +49,7 @@ public class UserCommentController {
         // setting userId in user for setting user in comment temporary
         // !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
         User user = new User();
-        user.setUserId(13);
+        user.setUserId(logUser.getUserId());
         // set user in comment: who commented
         userComment.setUser(user);
 

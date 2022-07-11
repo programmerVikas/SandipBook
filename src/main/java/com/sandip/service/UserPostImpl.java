@@ -10,6 +10,7 @@ import org.springframework.stereotype.Service;
 
 import com.sandip.dao.UserPostDao;
 import com.sandip.entity.Category;
+import com.sandip.entity.User;
 import com.sandip.entity.UserPost;
 
 @Service
@@ -33,6 +34,11 @@ public class UserPostImpl {
     // getting post by category
     public List<UserPost> findByCategoryData(Category category) {
         return userPostDao.findByCategory(category);
+    }
+
+    // getting post by user
+    public Page<UserPost> findPostByUser(User user, Pageable pageable) {
+        return userPostDao.findByUser(user, pageable);
     }
 
     // getting all user post data!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!

@@ -17,11 +17,11 @@
 
     <div class="bg-light">
 
-        <div class="container">
+        <div class="container" th:fragment="postNavbar">
 
             <!-- navbar !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!-->
             <nav class="navbar navbar-expand-lg navbar-light bg-light">
-                <a class="navbar-brand" href="#">
+                <a class="navbar-brand" th:href="@{/post/home/0}">
                     <img class="img-fluid " src="/images/logo.png" alt="SANDIPBOOK">
                 </a>
 
@@ -79,11 +79,15 @@
                 <div class="card bg-light user_profile" style="border-radius: 15px;">
                     <div class="card-body text-center">
                         <div class="mt-3 mb-3">
-                            <img src="https://mdbcdn.b-cdn.net/img/Photos/new-templates/bootstrap-chat/ava2-bg.webp"
-                                class="rounded-circle img-fluid" style="width: 100px;" />
+                            <a th:href="@{/profile/userProfile}">
+                                <!-- src="https://mdbcdn.b-cdn.net/img/Photos/new-templates/bootstrap-chat/ava2-bg.webp" -->
+                                <img th:src="${logUser.profilePic != null}?'/profilePictures/'+${logUser.profilePic}:'/images/userProfileImages.jpg'"
+                                    class="rounded-circle img-fluid" style="width: 100px;" />
+                            </a>
                         </div>
                         <h6 class="mb-1">
-                            <a href="">Nidhi Jha</a>
+                            <a th:href="@{/profile/userProfile}"
+                                th:text="${logUser.firstName}+' '+(${logUser.lastName != null}?${logUser.lastName}:'')"></a>
                         </h6>
                         <p class="text-muted title">
                             Fresher Java Developer || Java || Spring boot || MySql || Angular || Hibernate ||
@@ -91,10 +95,14 @@
                             || CSS || Good Communication Skill
                         </p>
                         <hr>
-                        <p class="title font-weight-bold text-muted prn">180205171004</p> <br>
-                        <p class="title font-weight-bold text-muted session">2018-22</p>
-                        <p class="title font-weight-bold text-muted prn">B.TECH</p>
-                        <p class="title font-weight-bold text-muted prn">Computer Science & Engineering</p>
+                        <p class="title font-weight-bold text-muted prn"
+                            th:text="${logUser.prn != null}?${logUser.prn}:'Set your PRN'"></p> <br>
+                        <p class="title font-weight-bold text-muted session"
+                            th:text="${logUser.session != null}?${logUser.session}:'Set your session'"></p>
+                        <p class="title font-weight-bold text-muted prn"
+                            th:text="${logUser.course != null}?${logUser.course.courseName}:'Set your Course'"></p>
+                        <p class="title font-weight-bold text-muted prn"
+                            th:text="${logUser.branch != null}?${logUser.branch.branchName}:'Set your branch'"></p>
 
                         <hr>
                     </div>
@@ -112,28 +120,14 @@
                 </div>
                 <!-- post module  started -->
 
-                <div class="card bg-light postInput mx-2">
+                <div class="card bg-light postInput mx-1">
 
                     <div class="card-body">
-                        <!-- <div class="row align-items-center ">
-                            <div class="col col-sm-2  text-center ">
-                                <a class="" href="#">
-                                    <img src="https://mdbcdn.b-cdn.net/img/Photos/new-templates/bootstrap-chat/ava2-bg.webp"
-                                        class="rounded-circle img-fluid" style="width: 50px;" />
-                                </a>
-                            </div>
-                            <div class="col-9 col-sm text-left">
-                                <input class="form-control muted mt-1" aria-label="Large"
-                                    aria-describedby="inputGroup-sizing-sm" type="text"
-                                    placeholder="What's on your mind, Nidhi ?" readonly data-toggle="modal"
-                                    data-target="#exampleModal">
-                            </div>
-                        </div> -->
 
                         <div class="align-items-center" style="display: flex;">
 
-                            <a class="" href="#">
-                                <img src="https://mdbcdn.b-cdn.net/img/Photos/new-templates/bootstrap-chat/ava2-bg.webp"
+                            <a class="" th:href="@{/profile/userProfile}">
+                                <img th:src="${logUser.profilePic != null}?'/profilePictures/'+${logUser.profilePic}:'/images/userProfileImages.jpg'"
                                     class="rounded-circle img-fluid" style="width: 50px;" />
                             </a>
                             <input class="form-control muted ml-3" aria-label="Large"
@@ -167,7 +161,7 @@
                                     <div class="row align-items-center">
                                         <div class="col col-sm-2 text-center">
                                             <a class="" href="#">
-                                                <img src="https://mdbcdn.b-cdn.net/img/Photos/new-templates/bootstrap-chat/ava2-bg.webp"
+                                                <img th:src="${logUser.profilePic != null}?'/profilePictures/'+${logUser.profilePic}:'/images/userProfileImages.jpg'"
                                                     class="rounded-circle img-fluid" style="width: 50px;" />
                                             </a>
                                         </div>
@@ -230,11 +224,12 @@
 
                     <div class="m-3" style="display: flex;">
                         <a class="" href="#">
-                            <img src="https://images.unsplash.com/photo-1535713875002-d1d0cf377fde?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxzZWFyY2h8Mnx8dXNlciUyMHByb2ZpbGV8ZW58MHx8MHx8&w=1000&q=80"
+                            <img th:src="${userPostData.user.profilePic != null}?'/profilePictures/'+${userPostData.user.profilePic}:'/images/userProfileImages.jpg'"
                                 class="rounded-circle img-fluid" style="width: 45px;" />
                         </a>
                         <div class="ml-2" style="line-height: 13px; font-size: small;">
-                            <h6 class=" mb-0" style="color: rgb(90, 77, 77);" th:text="${userPostData.user.firstName}">
+                            <h6 class=" mb-0" style="color: rgb(90, 77, 77);"
+                                th:text="${userPostData.user.firstName}+' '+(${userPostData.user.lastName != null}?${userPostData.user.lastName}:'')">
                             </h6>
                             <small class="text-secondary"
                                 th:text="${userPostData.user.branch == null} ? 'Complete your profile first !!':${userPostData.user.branch.branchName}"></small>
@@ -286,36 +281,37 @@
                     <!-- comment sections is here -->
 
                     <div class="">
-                       <hr class="mt-0">
+                        <hr class="mt-0">
                         <span class="mb-3" style="display: flex;">
-                            <button class="ml-2 btn btn-light likeButton" type="button"><i class="fa fa-thumbs-up iconLikeButton"
-                                aria-hidden="true"></i> Like
-                        </button>
+                            <button class="ml-2 btn btn-light likeButton" type="button"><i
+                                    class="fa fa-thumbs-up iconLikeButton" aria-hidden="true"></i> Like
+                            </button>
 
-                        <button class="btn btn-light collapseComment ml-3" type="button"> <i class="fa fa-comment"></i>
-                            Comment
-                        </button>
+                            <button class="btn btn-light collapseComment ml-3" type="button"> <i
+                                    class="fa fa-comment"></i>
+                                Comment
+                            </button>
 
-                       <span class="ml-auto">
-                        <a class="collapseComment2 mr-3" style="cursor: pointer;">
-                            <small> <span th:text="${#lists.size(userPostData.comments)}"></span>
-                                comments</small>
-                        </a>
-                       </span>
+                            <span class="ml-auto">
+                                <a class="collapseComment2 mr-3" style="cursor: pointer;">
+                                    <small> <span th:text="${#lists.size(userPostData.comments)}"></span>
+                                        comments</small>
+                                </a>
+                            </span>
                         </span>
 
 
                     </div>
 
                     <div class="card postInput bg-light collapseExamples" style="display: none;">
-                       
+
                         <form
                             th:action="@{/comment/save/userComment}+'/'+${userPostData.postId}+'/'+${currentPage}+'?categoryName='+${categoryName}"
                             method="post">
                             <div class="card-body ">
                                 <span style="display: flex;">
                                     <a class="" href="#">
-                                        <img src="https://mdbcdn.b-cdn.net/img/Photos/new-templates/bootstrap-chat/ava2-bg.webp"
+                                        <img th:src="${logUser.profilePic != null}?'/profilePictures/'+${logUser.profilePic}:'/images/userProfileImages.jpg'"
                                             class="rounded-circle img-fluid" style="width: 42px;" />
                                     </a>
 
@@ -334,7 +330,7 @@
                         <div class="card-body">
                             <span class="mb-0" style="display: flex;" th:each="commentData: ${userPostData.comments}">
                                 <a class="" href="#">
-                                    <img src="https://mdbcdn.b-cdn.net/img/Photos/new-templates/bootstrap-chat/ava2-bg.webp"
+                                    <img th:src="${commentData.user.profilePic != null}?'/profilePictures/'+${commentData.user.profilePic}:'/images/userProfileImages.jpg'"
                                         class="rounded-circle img-fluid" style="width: 42px;" />
                                 </a>
                                 <div class=" p-2 mt-2 mx-2 w-100"
@@ -351,7 +347,8 @@
                                         th:text="${commentData.commentAt}">27-Jun-2022 at 09:47 am</small>
                                 </div>
                             </span>
-                            <span class="text-center text-secondary" th:unless="${#lists.size(userPostData.comments)} != 0">
+                            <span class="text-center text-secondary"
+                                th:unless="${#lists.size(userPostData.comments)} != 0">
                                 <p>There are no comments yet...</p>
                             </span>
                         </div>
@@ -431,7 +428,27 @@
             </div>
             <div class="col-sm-3 rightcolcard">
 
-                third row
+                <div class="card">
+                    <span class="p-2" style="display: flex;">
+                        <img class="img-fluid" style="width: 17%;" src="/images/Events-icon.png" alt="">
+                        <h6 class="ml-3 text-success" style="margin-top: 10px;">Events / Seminar</h6>
+                    </span>
+                </div>
+
+                <div class="card eventcard mt-4 text-center text-light ">
+                    <span class="mt-3">
+                        <h4>Seminar</h4>
+                        <h5>03-07-2022</h5>
+                        <h5>8:00 PM</h5>
+                    </span>
+                </div>
+                <div class="card eventcard mt-4 text-center text-light ">
+                    <span class="mt-3">
+                        <h4>Seminar</h4>
+                        <h5>03-07-2022</h5>
+                        <h5>8:00 PM</h5>
+                    </span>
+                </div>
 
             </div>
         </div>

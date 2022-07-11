@@ -14,8 +14,13 @@ import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import javax.persistence.UniqueConstraint;
 
+import org.hibernate.annotations.DynamicInsert;
+import org.hibernate.annotations.DynamicUpdate;
+
 @Entity
 @Table(uniqueConstraints = {@UniqueConstraint(columnNames = {"email","prn"})})
+@DynamicInsert
+@DynamicUpdate
 public class User {
 
     @Id

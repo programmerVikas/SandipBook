@@ -44,11 +44,15 @@
                         <div class="sign form-group pt-3 pb-1">
                             <h3><b>Sign in</b></h3>
                             <p class="text-secondary">Stay updated on your Educational world</p>
+                            <div align="center" th:if="${param.error}">
+                                <p style="font-size: 20; color: #FF1C19;">User Name or Password invalid, please verify
+                                </p>
+                            </div>
                         </div>
                         <!-- form is starting************************************************************* -->
-                        <form action="">
+                        <form th:action="@{/login}" method="post">
                             <div class="form-group">
-                                <input class="form-control" name="email" type="text" placeholder="Email or Phone">
+                                <input class="form-control" name="email" type="text" placeholder="Email">
                             </div>
                             <div class="form-group">
                                 <input class="form-control" name="password" type="text" placeholder="Password">
@@ -80,5 +84,3 @@
 </body>
 
 </html>
-
-

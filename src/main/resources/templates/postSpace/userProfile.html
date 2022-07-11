@@ -1,0 +1,357 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+
+<head>
+
+    <div th:insert="commonfragment :: bootstrap"></div>
+    <title>UserProfile</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.2/css/all.min.css" />
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+
+    <!-- mapping CSS -->
+    <link rel="stylesheet" th:href="@{/css/postSpace/postHome.css}">
+    <link rel="stylesheet" th:href="@{/css/postSpace/userProfile.css}">
+
+</head>
+
+<body>
+
+    <div class="bg-light">
+        <div th:replace="postSpace/postHome :: postNavbar"></div>
+    </div>
+
+    <div class="container p-0">
+        <!-- Profile widget -->
+        <div class="bg-white shadow overflow-hidden">
+            <div class="px-4 pt-0 pb-4 bg-dark profileCoverCard">
+                <div class="media align-items-end profile-header">
+                    <div class="profile mr-3"><img
+                            th:src="${logUser.profilePic != null}?'/profilePictures/'+${logUser.profilePic}:'/images/userProfileImages.jpg'"
+                            alt="..." width="130" class="rounded mb-2 img-thumbnail img-fluid"><button
+                            class="btn btn-dark btn-sm btn-block" onclick="changeUserDetails()">Edit profile</button>
+                    </div>
+                    <div class="media-body mb-5 text-white">
+                        <h4 class="mt-0 mb-0"
+                            th:text="${logUser.firstName}+' '+(${logUser.lastName != null}?${logUser.lastName}:'')">
+                        </h4>
+                        <p class="small mb-4"> <i class="fa fa-map-marker mr-2"></i><span
+                                th:text="${logUser.address}"></span></p>
+                    </div>
+                </div>
+            </div>
+
+            <div class="bg-light p-4 d-flex justify-content-end text-center">
+                <ul class="list-inline mb-0">
+                    <li class="list-inline-item">
+                        <h5 class="font-weight-bold mb-0 d-block">241</h5><small class="text-muted"> <i
+                                class="fa fa-picture-o mr-1"></i>Photos</small>
+                    </li>
+                    <li class="list-inline-item">
+                        <h5 class="font-weight-bold mb-0 d-block">84K</h5><small class="text-muted"> <i
+                                class="fa fa-user-circle-o mr-1"></i>Followers</small>
+                    </li>
+                </ul>
+            </div>
+        </div><!-- End profile widget -->
+
+    </div>
+
+    <div class="container">
+        <div class="row mt-4 mb-4">
+
+            <div class="col-sm-5">
+                <div class="card shadow w-100 mb-3">
+                    <div class="card-header" style="background-color: rgb(211, 246, 208);;">
+                        <h5 class="card-title mt-1 text-primary">User Details</h5>
+                    </div>
+                    <div class="card-body" style="background-color: rgb(227, 249, 225);">
+
+                        <!-- showing user data -->
+                        <span class="user_details">
+                            <p class="bg-light p-2"><b>First Name : </b><span th:text="${logUser.firstName}"></span></p>
+                            <p class="bg-light p-2"><b>Last Name : </b><span th:text="${logUser.lastName}"></span></p>
+                            <p class="bg-light p-2"><b>Email : </b><span th:text="${logUser.email}"></span></p>
+                            <p class="bg-light p-2"><b>Course : </b><span th:text="${logUser.course.courseName}"></span>
+                            </p>
+                            <p class="bg-light p-2"><b>Branch : </b><span th:text="${logUser.branch.branchName}"></span>
+                            </p>
+                            <p class="bg-light p-2"><b>Session : </b><span th:text="${logUser.session}"></span></p>
+                            <p class="bg-light p-2"><b>AcademicYear : </b><span
+                                    th:text="${logUser.AcademicYear}"></span></p>
+                            <p class="bg-light p-2"><b>Prn : </b><span th:text="${logUser.prn}"></span></p>
+                            <p class="bg-light p-2"><b>Address : </b><span th:text="${logUser.address}"></span></p>
+                            <p class="bg-light p-2"><b>Registered At: </b><span
+                                    th:text="${logUser.registereddAt}"></span></p>
+                            <p class="bg-light p-2"><b>Recently updated At: </b><span
+                                    th:text="${logUser.updatedAt}"></span></p>
+
+                        </span>
+
+                        <!-- Update user data !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!! -->
+                        <span class="user_update_form">
+                            <form th:action="@{/profile/saveProfile}" method="post">
+                                <div class="form-group">
+                                    <label for="exampleInputEmail1">Select your role</label>
+                                    <select class="form-control pl-1" name="role" id="">
+                                        <!-- <option selected value="">Public</option> -->
+                                        <!-- th:each="categoryData : ${navbarCategoryData}" -->
+                                        <span>
+                                            <!-- <option th:value="${categoryData.cId}"
+                                                th:text="${categoryData.categoryName}">One</option> -->
+                                            <option value="">Student</option>
+                                            <option value="">Teacher</option>
+                                        </span>
+                                    </select>
+                                    <!-- <small id="emailHelp" class="form-text text-muted">We'll never share your email with anyone else.</small> -->
+                                </div>
+                                <div class="form-group">
+                                    <label for="exampleInputEmail1">First name</label>
+                                    <input type="text" class="form-control" id="firstName" aria-describedby="firstname"
+                                        placeholder="Enter first name" name="firstName" th:value="${logUser.firstName}">
+                                    <!-- <small id="emailHelp" class="form-text text-muted">We'll never share your email with anyone else.</small> -->
+                                </div>
+                                <div class="form-group">
+                                    <label for="exampleInputEmail1">Last name</label>
+                                    <input type="text" class="form-control" id="lastName" aria-describedby="lastName"
+                                        placeholder="Enter last name" name="lastName" th:value="${logUser.lastName}">
+                                    <!-- <small id="emailHelp" class="form-text text-muted">We'll never share your email with anyone else.</small> -->
+                                </div>
+                                <div class="form-group">
+                                    <label for="exampleInputEmail1">Email address</label>
+                                    <input type="text" class="form-control" id="email" aria-describedby="email"
+                                        placeholder="Enter email address" name="email" th:value="${logUser.email}">
+                                    <!-- <small id="emailHelp" class="form-text text-muted">We'll never share your email with anyone else.</small> -->
+                                </div>
+                                <div class="form-group">
+                                    <label for="exampleInputEmail1">Course</label>
+                                    <select class="form-control pl-1" name="course" id="">
+                                        <!-- <option selected value="">Public</option> -->
+
+                                        <option selected
+                                            th:value="${logUser.course != null}? ${logUser.course.courseId}"
+                                            th:text="${logUser.course != null}? ${logUser.course.courseName}:'select branch course'">
+                                        </option>
+
+                                        <option value="">Select your course</option>
+                                        <span th:each="courseData : ${courseData}">
+                                            <option th:value="${courseData.courseId}"
+                                                th:text="${courseData.courseName}"></option>
+                                        </span>
+                                    </select>
+                                    <!-- <small id="emailHelp" class="form-text text-muted">We'll never share your email with anyone else.</small> -->
+                                </div>
+                                <div class="form-group">
+                                    <label for="exampleInputEmail1">Branch</label>
+                                    <select class="form-control pl-1" name="branch" id="">
+                                        <option selected
+                                            th:value="${logUser.branch != null}? ${logUser.branch.branchId}"
+                                            th:text="${logUser.branch != null}? ${logUser.branch.branchName}:'select branch'">
+                                        </option>
+                                        <span th:each="branchData : ${branchData}">
+                                            <!-- <option th:value="${categoryData.cId}"
+                                                th:text="${categoryData.categoryName}">One</option> -->
+                                            <option th:value="${branchData.branchId}"
+                                                th:text="${branchData.branchName}"></option>
+                                        </span>
+                                    </select>
+                                    <!-- <small id="emailHelp" class="form-text text-muted">We'll never share your email with anyone else.</small> -->
+                                </div>
+                                <div class="form-group">
+                                    <label for="exampleInputEmail1">Session</label>
+                                    <input type="text" class="form-control" id="session"
+                                        placeholder="For ex : ' 2018-22 '" name="session" th:value="${logUser.session}">
+                                    <!-- <small id="emailHelp" class="form-text text-muted">We'll never share your email with anyone else.</small> -->
+                                </div>
+                                <div class="form-group">
+                                    <label for="exampleInputEmail1">AcademicYear</label>
+                                    <input type="text" class="form-control" id="AcademicYear" placeholder="4"
+                                        name="AcademicYear" th:value="${logUser.AcademicYear}">
+                                    <!-- <small id="emailHelp" class="form-text text-muted">We'll never share your email with anyone else.</small> -->
+                                </div>
+
+                                <div class="form-group">
+                                    <label for="exampleInputEmail1">Prn</label>
+                                    <input type="text" class="form-control" id="Prn" placeholder="Enter prn no."
+                                        name="prn" th:value="${logUser.prn}">
+                                    <!-- <small id="emailHelp" class="form-text text-muted">We'll never share your email with anyone else.</small> -->
+                                </div>
+
+                                <div class="form-group">
+                                    <label for="exampleInputEmail1">Address</label>
+                                    <input type="text" class="form-control" id="address"
+                                        placeholder="Enter your address" name="address" th:value="${logUser.address}">
+                                    <!-- <small id="emailHelp" class="form-text text-muted">We'll never share your email with anyone else.</small> -->
+                                </div>
+
+                                <div style="float: right;">
+                                    <button type="submit" class="btn btn-success">Save changes</button>
+                                </div>
+                            </form>
+                        </span>
+
+                    </div>
+                </div>
+            </div>
+
+            <!-- user post'list -->
+            <div class="col-sm-7 p-0">
+
+
+                <div class="card mb-3 paginationSecond" th:each="userPostData : ${postData}">
+
+                    <div class="m-3" style="display: flex;">
+                        <a class="" href="#">
+                            <img th:src="${userPostData.user.profilePic != null}?'/profilePictures/'+${userPostData.user.profilePic}:'/images/userProfileImages.jpg'"
+                                class="rounded-circle img-fluid" style="width: 45px;" />
+                        </a>
+                        <div class="ml-2" style="line-height: 13px; font-size: small;">
+                            <h6 class=" mb-0" style="color: rgb(90, 77, 77);"
+                                th:text="${userPostData.user.firstName}+' '+(${userPostData.user.lastName != null}?${userPostData.user.lastName}:'')">
+                            </h6>
+                            <small class="text-secondary"
+                                th:text="${userPostData.user.branch == null} ? 'Complete your profile first !!':${userPostData.user.branch.branchName}"></small>
+                            <br>
+                            <small class="text-secondary" th:text="${userPostData.postOn}"></small>
+                        </div>
+                    </div>
+
+
+
+                    <!-- content of the post -->
+                    <p class="mx-3 mb-0 show-read-more" style="font-size: 15px;" th:text="${userPostData.post}"></p>
+                    <!-- content of the post end -->
+
+                    <a th:if="${!#strings.containsIgnoreCase(''+userPostData.photo,'.pdf') && userPostData.photo != null}"
+                        target="_blank" th:href="('/uploadedImages/'+${userPostData.photo})"
+                        style="background: transparent url(https://miro.medium.com/max/1400/1*CsJ05WEGfunYMLGfsT2sXA.gif) no-repeat center; background-size: 70% 50%;">
+                        <img class="img-fluid w-100 mb-0" th:src="'/uploadedImages/'+${userPostData.photo}"
+                            onerror="this.onerror=null; this.src='https://miro.medium.com/max/1400/1*zE2qnVTJehut7B8P2aMn3A.gif'"
+                            alt="">
+                    </a>
+
+
+                    <span class="embedfile mb-0" th:if="${#strings.containsIgnoreCase(''+userPostData.photo,'.pdf')}">
+
+                        <object th:if="${#strings.containsIgnoreCase(''+userPostData.photo,'.pdf')}" class="w-100 mb-0"
+                            th:data="('/uploadedImages/'+${userPostData.photo}+'#toolbar=0')" type="application/pdf"
+                            height="500"
+                            style="background: transparent url(https://miro.medium.com/max/1400/1*CsJ05WEGfunYMLGfsT2sXA.gif) no-repeat center; background-size: 70% 50%;">
+                            <p class="p-3 ">Your web browser doesn't have a PDF plugin. <br>
+                                <!-- <b class="text-light" th:text="${userPostData.photo}"></b> <br> -->
+                                <b class="text-light "
+                                    th:text="${#strings.replace(userPostData.photo,#strings.substring(userPostData.photo, 0),#strings.substring(userPostData.photo, #strings.indexOf(userPostData.photo,'@Books')+6))}"></b>
+
+                                <br>
+                                <!-- <p ></p> -->
+                                <a class="btn btn-success mt-3"
+                                    th:href="('/uploadedImages/'+${userPostData.photo}+'#toolbar=0')">Click
+                                    here to
+                                    download the PDF file</a>
+                            </p>
+                        </object>
+
+                    </span>
+
+
+
+
+                    <!-- comment sections is here -->
+
+                    <div class="">
+                        <hr class="mt-0">
+                        <span class="mb-3" style="display: flex;">
+                            <button class="ml-2 btn btn-light likeButton" type="button"><i
+                                    class="fa fa-thumbs-up iconLikeButton" aria-hidden="true"></i> Like
+                            </button>
+
+                            <button class="btn btn-light collapseComment ml-3" type="button"> <i
+                                    class="fa fa-comment"></i>
+                                Comment
+                            </button>
+
+                            <span class="ml-auto">
+                                <a class="collapseComment2 mr-3" style="cursor: pointer;">
+                                    <small> <span th:text="${#lists.size(userPostData.comments)}"></span>
+                                        comments</small>
+                                </a>
+                            </span>
+                        </span>
+
+
+                    </div>
+
+                    <div class="card postInput bg-light collapseExamples" style="display: none;">
+
+                        <form
+                            th:action="@{/comment/save/userComment}+'/'+${userPostData.postId}+'/'+${currentPage}+'?categoryName='+${categoryName}"
+                            method="post">
+                            <div class="card-body ">
+                                <span style="display: flex;">
+                                    <a class="" href="#">
+                                        <img th:src="${logUser.profilePic != null}?'/profilePictures/'+${logUser.profilePic}:'/images/userProfileImages.jpg'"
+                                            class="rounded-circle img-fluid" style="width: 42px;" />
+                                    </a>
+
+                                    <textarea class="mx-2 form-control mt-1 commentTextArea" name="comment"
+                                        aria-label="Large" aria-describedby="inputGroup-sizing-sm" type="text"
+                                        placeholder="Add a comment..."></textarea>
+                                </span>
+                                <span class="mr-2 mt-1" style="float: right;">
+                                    <button type="submit" disabled class="btn btn-info commentButton">Post</button>
+                                </span>
+                            </div>
+
+                        </form>
+                        <p class="ml-4 mb-0">Comments</p>
+
+                        <div class="card-body">
+                            <span class="mb-0" style="display: flex;" th:each="commentData: ${userPostData.comments}">
+                                <a class="" href="#">
+                                    <img th:src="${commentData.user.profilePic != null}?'/profilePictures/'+${commentData.user.profilePic}:'/images/userProfileImages.jpg'"
+                                        class="rounded-circle img-fluid" style="width: 42px;" />
+                                </a>
+                                <div class=" p-2 mt-2 mx-2 w-100"
+                                    style="background-color: rgb(238 238 238); font-size: 14px; border-radius: 0px 10px 10px 20px;">
+                                    <p class="mb-0"><b th:text="${commentData.user.firstName}"></b></p>
+                                    <p class="mb-1" th:text="${commentData.comment}">
+                                        Lorem ipsum dolor sit amet consectetur adipisicing elit. Repellendus temporibus
+                                        mollitia tenetur nobis ducimus cupiditate inventore ipsum iure quas. Ad facilis
+                                        quos
+                                        voluptate perspiciatis eum beatae corporis doloremque consectetur
+                                        architecto!consectetur architecto!
+                                    </p>
+                                    <small class="mt-0 text-secondary" style="float: right;"
+                                        th:text="${commentData.commentAt}">27-Jun-2022 at 09:47 am</small>
+                                </div>
+                            </span>
+                            <span class="text-center text-secondary"
+                                th:unless="${#lists.size(userPostData.comments)} != 0">
+                                <p>There are no comments yet...</p>
+                            </span>
+                        </div>
+
+
+                    </div>
+                    <!-- comment sections is here !!!!!!!!!!!!!!!! -->
+
+                </div>
+
+
+            </div>
+
+        </div>
+    </div>
+
+
+
+
+    <script src="/js/userProfile.js"></script>
+
+</body>
+
+</html>
+<!-- <div class="card profileCoverCard"> -->
+<!-- <div class="card-body">
+
+        </div> -->
+<!-- </div> -->

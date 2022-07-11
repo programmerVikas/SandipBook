@@ -135,3 +135,11 @@
 .show-read-more .more-text{
     display: none;
 }
+
+.eventcard{
+    height: 20vh;
+    background-image:  url(https://cdn.shopify.com/s/files/1/0550/5607/2941/collections/187161_f64cf7e4-16ba-483d-836f-a59d4305c14e.jpg?v=1636628788);
+    background-position: center;
+    background-repeat: no-repeat;
+    background-size: cover;
+}
