@@ -32,12 +32,11 @@
 
                 <div class="collapse navbar-collapse " id="navbarNavAltMarkup">
                     <div class="navbar-nav ml-auto">
-                        <a class="navbar-toggler text-center" href="#" style="border: none;">
-                            <img src="https://mdbcdn.b-cdn.net/img/Photos/new-templates/bootstrap-chat/ava2-bg.webp"
+                        <a class="navbar-toggler text-center" th:href="@{/profile/userProfile/0}" style="border: none;">
+                            <img th:src="${logUser.profilePic != null}?'/profilePictures/'+${logUser.profilePic}:'/images/userProfileImages.jpg'"
                                 class="rounded-circle img-fluid" style="width: 40px;" />
                             <p class="font-weight-bold mt-1 mb-0">Profile</p>
                         </a>
-                        <!-- <a class="nav-item nav-link btn btn-light mx-1 active" href="#">Home </a> -->
 
                         <!-- printing only 7 list data in navbar -->
                         <span
@@ -79,14 +78,14 @@
                 <div class="card bg-light user_profile" style="border-radius: 15px;">
                     <div class="card-body text-center">
                         <div class="mt-3 mb-3">
-                            <a th:href="@{/profile/userProfile}">
+                            <a th:href="@{/profile/userProfile/0}">
                                 <!-- src="https://mdbcdn.b-cdn.net/img/Photos/new-templates/bootstrap-chat/ava2-bg.webp" -->
                                 <img th:src="${logUser.profilePic != null}?'/profilePictures/'+${logUser.profilePic}:'/images/userProfileImages.jpg'"
                                     class="rounded-circle img-fluid" style="width: 100px;" />
                             </a>
                         </div>
                         <h6 class="mb-1">
-                            <a th:href="@{/profile/userProfile}"
+                            <a th:href="@{/profile/userProfile/0}"
                                 th:text="${logUser.firstName}+' '+(${logUser.lastName != null}?${logUser.lastName}:'')"></a>
                         </h6>
                         <p class="text-muted title">
@@ -126,13 +125,13 @@
 
                         <div class="align-items-center" style="display: flex;">
 
-                            <a class="" th:href="@{/profile/userProfile}">
+                            <a class="" th:href="@{/profile/userProfile/0}">
                                 <img th:src="${logUser.profilePic != null}?'/profilePictures/'+${logUser.profilePic}:'/images/userProfileImages.jpg'"
                                     class="rounded-circle img-fluid" style="width: 50px;" />
                             </a>
                             <input class="form-control muted ml-3" aria-label="Large"
                                 aria-describedby="inputGroup-sizing-sm" type="text"
-                                placeholder="What's on your mind, Nidhi ?" readonly data-toggle="modal"
+                                th:placeholder="@{'Whats on your mind, '+${logUser.firstName}+' ?'}" readonly data-toggle="modal"
                                 data-target="#exampleModal">
                         </div>
 
@@ -160,14 +159,16 @@
 
                                     <div class="row align-items-center">
                                         <div class="col col-sm-2 text-center">
-                                            <a class="" href="#">
+                                            <a class="" th:href="@{/profile/userProfile/0}">
                                                 <img th:src="${logUser.profilePic != null}?'/profilePictures/'+${logUser.profilePic}:'/images/userProfileImages.jpg'"
                                                     class="rounded-circle img-fluid" style="width: 50px;" />
                                             </a>
                                         </div>
                                         <div class="col-9 col-sm-10 text-left d-flex ">
                                             <span class="category_dropdown">
-                                                <h6 class="mb-1">Nidhi Jha</h6>
+                                                <h6 class="mb-1"
+                                                    th:text="${logUser.firstName}+' '+(${logUser.lastName != null}?${logUser.lastName}:'')">
+                                                </h6>
                                                 <i class="fa fa-globe"></i>
                                                 <select class="selectInput pl-1" name="category" id="">
                                                     <!-- <option selected value="">Public</option> -->
@@ -213,17 +214,12 @@
                 <!-- modal has ended !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!! -->
 
 
-
-
-
-
-
                 <!-- post module  ended -->
                 <!-- post content data is showing !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!! -->
                 <div class="card mb-3 paginationSecond" th:each="userPostData : ${postData}">
 
                     <div class="m-3" style="display: flex;">
-                        <a class="" href="#">
+                        <a class="" th:href="@{/profile/unknownUserProfile/}+${userPostData.user.userId}+@{/0}">
                             <img th:src="${userPostData.user.profilePic != null}?'/profilePictures/'+${userPostData.user.profilePic}:'/images/userProfileImages.jpg'"
                                 class="rounded-circle img-fluid" style="width: 45px;" />
                         </a>
@@ -260,7 +256,6 @@
                             height="500"
                             style="background: transparent url(https://miro.medium.com/max/1400/1*CsJ05WEGfunYMLGfsT2sXA.gif) no-repeat center; background-size: 70% 50%;">
                             <p class="p-3 ">Your web browser doesn't have a PDF plugin. <br>
-                                <!-- <b class="text-light" th:text="${userPostData.photo}"></b> <br> -->
                                 <b class="text-light "
                                     th:text="${#strings.replace(userPostData.photo,#strings.substring(userPostData.photo, 0),#strings.substring(userPostData.photo, #strings.indexOf(userPostData.photo,'@Books')+6))}"></b>
 
@@ -274,8 +269,6 @@
                         </object>
 
                     </span>
-
-
 
 
                     <!-- comment sections is here -->
@@ -362,8 +355,8 @@
                 <!-- Post module has ended -->
 
                 <!-- pagination !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!-->
-                <nav aria-label="Page navigation example" class="table-responsive d-flex justify-content-center my-2">
-                    <ul class="pagination m-1" th:if="${totalPages != 0}">
+                <nav aria-label="Page navigation example" class="table-responsive my-2 p-2">
+                    <ul class="pagination m-1 nav justify-content-center" th:if="${totalPages != 0}">
                         <li th:if="${currentPage != 0}" class="page-item" title="First">
                             <a class="page-link" href="#"
                                 th:href="@{'/post/home/'+${0}+'?categoryName='+${categoryName}}" aria-label="Previous">

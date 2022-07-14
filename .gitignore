@@ -34,3 +34,6 @@ build/
 
 ###Ignoring uploadedimages folder ###
 /src/main/resources/static/uploadedImages/
+/src/main/resources/static/profilePictures/
+
+

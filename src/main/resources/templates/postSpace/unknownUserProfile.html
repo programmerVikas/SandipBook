@@ -2,7 +2,6 @@
 <html lang="en" xmlns:th="http://www.thymeleaf.org">
 
 <head>
-
     <div th:insert="commonfragment :: bootstrap"></div>
     <title>UserProfile</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.2/css/all.min.css" />
@@ -11,7 +10,6 @@
     <!-- mapping CSS -->
     <link rel="stylesheet" th:href="@{/css/postSpace/postHome.css}">
     <link rel="stylesheet" th:href="@{/css/postSpace/userProfile.css}">
-
 </head>
 
 <body>
@@ -26,21 +24,18 @@
             <div class="px-4 pt-0 pb-4 bg-dark profileCoverCard">
                 <div class="media align-items-end profile-header">
                     <div class="profile mr-3"><img
-                            th:src="${logUser.profilePic != null}?'/profilePictures/'+${logUser.profilePic}:'/images/userProfileImages.jpg'"
+                            th:src="${unknownUser.profilePic != null}?'/profilePictures/'+${unknownUser.profilePic}:'/images/userProfileImages.jpg'"
                             alt="..." width="130" class="rounded mb-2 img-thumbnail img-fluid">
-                        <button class="btn btn-dark btn-sm btn-block" onclick="changeUserDetails()">Edit
-                            profile</button>
-
+                        <h4><span class="badge d-block badge-secondary" th:text="${unknownUser.user_role.role}"></span>
+                        </h4>
                     </div>
                     <div class="media-body mb-5 text-white">
-                        <button type="button" class="mb-1 btn btn-dark border border-success rounded"
-                            data-toggle="modal" data-target="#exampleModalCenter"><i class="fa fa-camera"
-                                aria-hidden="true"></i></button>
+
                         <h4 class="mt-0 mb-0"
-                            th:text="${logUser.firstName}+' '+(${logUser.lastName != null}?${logUser.lastName}:'')">
+                            th:text="${unknownUser.firstName}+' '+(${unknownUser.lastName != null}?${unknownUser.lastName}:'')">
                         </h4>
                         <p class="small mb-4"> <i class="fa fa-map-marker mr-2"></i><span
-                                th:text="${logUser.address}"></span></p>
+                                th:text="${unknownUser.branch != null}?${unknownUser.branch.branchName}"></span></p>
 
                     </div>
                 </div>
@@ -49,44 +44,6 @@
             <div class="bg-light p-4 d-flex justify-content-end text-center">
                 <ul class="list-inline mb-0 ">
                     <li class="list-inline-item">
-
-                        <!--file upload model has started  -->
-                        <!-- Modal -->
-                        <div class="modal fade" id="exampleModalCenter" tabindex="-1" role="dialog"
-                            aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
-                            <div class="modal-dialog modal-dialog-centered" role="document">
-                                <div class="modal-content">
-                                    <div class="modal-header">
-                                        <h5 class="modal-title" id="exampleModalLongTitle">Change profile
-                                            picture</h5>
-                                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                                            <span aria-hidden="true">&times;</span>
-                                        </button>
-                                    </div>
-                                    <form th:action="@{/profile/saveProfilePic}" method="post"
-                                        enctype="multipart/form-data">
-                                        <div class="modal-body">
-
-                                            <div class="drag-image">
-                                                <span class="test-image">
-                                                    <div class="icon"><i class="fas fa-cloud-upload-alt"></i></div>
-                                                    <h6>Drag & Drop File Here</h6>
-                                                    <span>OR</span>
-                                                    <button type="button">Browse File</button>
-                                                </span>
-                                                <input type="file" accept="image/*" class="profileInput" hidden name="profilePics">
-                                            </div>
-
-
-                                        </div>
-                                        <div class="modal-footer">
-                                            <button type="submit" class="btn btn-primary profileInputButton" disabled>Save changes</button>
-                                        </div>
-                                    </form>
-                                </div>
-                            </div>
-                        </div>
-                        <!--file upload model has ended  -->
 
                     </li>
                 </ul>
@@ -98,7 +55,6 @@
     <div class="container">
         <div class="row mt-4 mb-4">
 
-
             <div class="col-sm-5">
                 <div class="card shadow w-100 mb-3">
                     <div class="card-header" style="background-color: rgb(211, 246, 208);;">
@@ -108,143 +64,39 @@
 
                         <!-- showing user data -->
                         <span class="user_details">
-                            <p class="bg-light p-2"><b>First Name : </b> <span th:text="${logUser.firstName}"></span>
+                            <p class="bg-light p-2"><b>Username : </b> <span
+                                    th:text="${unknownUser.firstName}+' '+${unknownUser.lastName}"></span>
                             </p>
-                            <p class="bg-light p-2"><b>Last Name : </b><span th:text="${logUser.lastName}"></span></p>
-                            <p class="bg-light p-2"><b>Email : </b><span th:text="${logUser.email}"></span></p>
+                            <p class="bg-light p-2"
+                                th:if="${logUser.user_role.role == 'teacher' || logUser.user_role.role == 'admin'}">
+                                <b>Email : </b><span th:text="${unknownUser.email}"></span>
+                            </p>
                             <p class="bg-light p-2"><b>Course : </b><span
-                                    th:text="${logUser.course != null}?${logUser.course.courseName}"></span>
+                                    th:text="${unknownUser.course != null}?${unknownUser.course.courseName}"></span>
                             </p>
                             <p class="bg-light p-2"><b>Branch : </b><span
-                                    th:text="${logUser.branch != null}?${logUser.branch.branchName}"></span>
+                                    th:text="${unknownUser.branch != null}?${unknownUser.branch.branchName}"></span>
                             </p>
-                            <p class="bg-light p-2"><b>Session : </b><span th:text="${logUser.session}"></span></p>
+                            <p class="bg-light p-2"><b>Session : </b><span th:text="${unknownUser.session}"></span></p>
                             <p class="bg-light p-2"><b>AcademicYear : </b><span
-                                    th:text="${logUser.AcademicYear}"></span></p>
-                            <p class="bg-light p-2"><b>Prn : </b><span th:text="${logUser.prn}"></span></p>
-                            <p class="bg-light p-2"><b>Address : </b><span th:text="${logUser.address}"></span></p>
+                                    th:text="${unknownUser.AcademicYear}"></span></p>
+                            <p class="bg-light p-2"><b>Prn : </b><span th:text="${unknownUser.prn}"></span></p>
+                            <p class="bg-light p-2"><b>Address : </b><span th:text="${unknownUser.address}"></span></p>
                             <p class="bg-light p-2"><b>Registered At: </b><span
-                                    th:text="${logUser.registereddAt}"></span></p>
+                                    th:text="${unknownUser.registereddAt}"></span></p>
                             <p class="bg-light p-2"><b>Recently updated At: </b><span
-                                    th:text="${logUser.updatedAt}"></span></p>
+                                    th:text="${unknownUser.updatedAt}"></span></p>
 
                         </span>
-
-                        <!-- Update user data !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!! -->
-                        <span class="user_update_form">
-
-                            <form id="myform" th:action="@{/profile/saveProfile}" method="post">
-
-                                <div class="form-group" th:if="${logUser.user_role.role == 'normal'}">
-                                    <label for="exampleInputEmail1">Select your role</label>
-                                    <select class="form-control pl-1" name="user_role" id="">
-                                        <option selected th:value="${logUser.user_role.roleId}"> Select Role </option>
-                                        <!-- th:each="categoryData : ${navbarCategoryData}" -->
-                                        <span th:each="userRole : ${userRole}">
-                                            <option th:value="${userRole.roleId}" th:text="${userRole.role}"></option>
-                                        </span>
-                                    </select>
-                                    <small>Select your role carefully, You can't change it later !!</small>
-                                </div>
-                                <div class="form-group">
-                                    <label for="exampleInputEmail1">First name</label>
-                                    <input type="text" class="form-control" id="firstName" aria-describedby="firstname"
-                                        placeholder="Enter first name" name="firstName" th:value="${logUser.firstName}">
-                                    <!-- <small id="emailHelp" class="form-text text-muted">We'll never share your email with anyone else.</small> -->
-                                </div>
-                                <div class="form-group">
-                                    <label for="exampleInputEmail1">Last name</label>
-                                    <input type="text" class="form-control" id="lastName" aria-describedby="lastName"
-                                        placeholder="Enter last name" name="lastName" th:value="${logUser.lastName}">
-                                    <!-- <small id="emailHelp" class="form-text text-muted">We'll never share your email with anyone else.</small> -->
-                                </div>
-                                <div class="form-group">
-                                    <label for="exampleInputEmail1">Email address</label>
-                                    <input type="text" readonly class="form-control" id="email" aria-describedby="email"
-                                        placeholder="Enter email address" name="email" th:value="${logUser.email}">
-                                </div>
-                                <div class="form-group">
-                                    <label for="exampleInputEmail1">Password</label>
-                                    <input type="text" class="form-control" id="password" aria-describedby="password"
-                                        placeholder="Enter your strong password" name="password"
-                                        th:value="${logUser.password}">
-                                    <!-- <small id="emailHelp" class="form-text text-muted">We'll never share your email with anyone else.</small> -->
-                                </div>
-                                <div class="form-group">
-                                    <label for="exampleInputEmail1">Course</label>
-                                    <select class="form-control pl-1" name="course" id="">
-
-                                        <option selected
-                                            th:value="${logUser.course != null}? ${logUser.course.courseId}"
-                                            th:text="${logUser.course != null}? ${logUser.course.courseName}:'select branch course'">
-                                        </option>
-
-                                        <span th:each="courseData : ${courseData}">
-                                            <option th:value="${courseData.courseId}"
-                                                th:text="${courseData.courseName}"></option>
-                                        </span>
-                                    </select>
-                                    <!-- <small id="emailHelp" class="form-text text-muted">We'll never share your email with anyone else.</small> -->
-                                </div>
-                                <div class="form-group">
-                                    <label for="exampleInputEmail1">Branch</label>
-                                    <select class="form-control pl-1" name="branch" id="">
-                                        <option selected
-                                            th:value="${logUser.branch != null}? ${logUser.branch.branchId}"
-                                            th:text="${logUser.branch != null}? ${logUser.branch.branchName}:'select branch'">
-                                        </option>
-
-                                        <span th:each="branchData : ${branchData}">
-                                            <!-- <option th:value="${categoryData.cId}"
-                                                th:text="${categoryData.categoryName}">One</option> -->
-                                            <option th:value="${branchData.branchId}"
-                                                th:text="${branchData.branchName}"></option>
-                                        </span>
-                                    </select>
-
-                                </div>
-                                <div class="form-group">
-                                    <label for="exampleInputEmail1">Session</label>
-                                    <input type="text" class="form-control" id="session" placeholder="For ex - 2018-22 "
-                                        name="session" th:value="${logUser.session}">
-
-                                </div>
-                                <div class="form-group">
-                                    <label for="exampleInputEmail1">AcademicYear</label>
-                                    <input type="number" class="form-control" id="AcademicYear" placeholder="For ex - 4"
-                                        name="AcademicYear" th:value="${logUser.AcademicYear}">
-
-                                </div>
-
-                                <div class="form-group">
-                                    <label for="exampleInputEmail1">Prn</label>
-                                    <input type="text" class="form-control" id="Prn" placeholder="Enter prn no."
-                                        name="prn" th:value="${logUser.prn}">
-
-                                </div>
-
-                                <div class="form-group">
-                                    <label for="exampleInputEmail1">Address</label>
-                                    <input type="text" class="form-control" id="address"
-                                        placeholder="Enter your address" name="address" th:value="${logUser.address}">
-
-                                </div>
-
-                                <div style="float: right;">
-                                    <button type="submit" class="btn btn-success">Save changes</button>
-                                </div>
-                            </form>
-                        </span>
-
                     </div>
                 </div>
             </div>
 
-            <!-- user post'list -->
+
             <div class="col-sm-7 p-0">
 
-
                 <div class="card mb-3 paginationSecond" th:each="userPostData : ${postData}">
+
 
                     <div class="m-3" style="display: flex;">
                         <a class="" href="#">
@@ -260,12 +112,7 @@
                             <br>
                             <small class="text-secondary" th:text="${userPostData.postOn}"></small>
                         </div>
-                       <a th:href="@{'/profile/deletePost/'+${userPostData.postId}}" class="ml-auto">
-                        <button class=" btn btn-sm btn-light rounded-circle"><i class="fa fa-trash" aria-hidden="true"></i></button>
-                       </a>
                     </div>
-
-
 
                     <!-- content of the post -->
                     <p class="mx-3 mb-0 show-read-more" style="font-size: 15px;" th:text="${userPostData.post}"></p>
@@ -302,9 +149,6 @@
 
                     </span>
 
-
-
-
                     <!-- comment sections is here -->
 
                     <div class="">
@@ -333,7 +177,7 @@
                     <div class="card postInput bg-light collapseExamples" style="display: none;">
 
                         <form
-                            th:action="@{/comment/save/userComment}+'/'+${userPostData.postId}+'/'+${currentPage}+'?profileComment=profileComment'"
+                            th:action="@{/comment/save/userComment}+'/'+${userPostData.postId}+'/'+${currentPage}+'?profileComment=unknownprofileComment&userId='+${unknownUser.userId}"
                             method="post">
                             <div class="card-body ">
                                 <span style="display: flex;">
@@ -386,20 +230,22 @@
 
                 </div>
 
-                <!-- @{/profile/userProfile/0} -->
 
                 <!-- pagination !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!-->
+
                 <nav aria-label="Page navigation example" class="table-responsive my-2 p-2">
                     <ul class="pagination nav justify-content-center" th:if="${totalPages != 0}">
                         <li th:if="${currentPage != 0}" class="page-item" title="First">
-                            <a class="page-link" href="#" th:href="@{'/profile/userProfile/'+${0}}"
+                            <a class="page-link" href="#"
+                                th:href="('/profile/unknownUserProfile/')+${unknownUser.userId}+'/'+${0}"
                                 aria-label="Previous">
                                 <span aria-hidden="true">&laquo;&laquo;</span>
                                 <span class="sr-only">First</span>
                             </a>
                         </li>
                         <li th:if="${currentPage != 0}" class="page-item" title="Previous">
-                            <a class="page-link" href="#" th:href="@{'/profile/userProfile/'+${currentPage-1}}"
+                            <a class="page-link" href="#"
+                                th:href="('/profile/unknownUserProfile/')+${unknownUser.userId}+'/'+${currentPage-1}"
                                 aria-label="Previous">
                                 <span aria-hidden="true">&laquo;</span>
                                 <span class="sr-only">Previous</span>
@@ -411,13 +257,13 @@
                         <!-- numbering of pages!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!! -->
                         <li th:classappend="${currentPage == i-1}?'active':''"
                             th:each="i : ${#numbers.sequence(1,totalPages)}" class="page-item"><a class="page-link"
-                                th:href="@{'/profile/userProfile/'+${i-1}}"><span th:text="${i}"></span></a></li>
-
-
+                                th:href="('/profile/unknownUserProfile/')+${unknownUser.userId}+'/'+${i-1}"><span
+                                    th:text="${i}"></span></a></li>
 
 
                         <li th:if="${currentPage+1 != totalPages}" class="page-item" title="Next">
-                            <a class="page-link" href="#" th:href="@{'/profile/userProfile/'+${currentPage+1}}"
+                            <a class="page-link" href="#"
+                                th:href="('/profile/unknownUserProfile/')+${unknownUser.userId}+'/'+${currentPage+1}"
                                 aria-label="Next">
                                 <span aria-hidden="true">&raquo;</span>
                                 <span class="sr-only">Next</span>
@@ -425,7 +271,8 @@
                         </li>
 
                         <li th:if="${currentPage+1 != totalPages}" class="page-item" title="Last">
-                            <a class="page-link" href="#" th:href="@{'/profile/userProfile/'+${totalPages-1}}"
+                            <a class="page-link" href="#"
+                                th:href="('/profile/unknownUserProfile/')+${unknownUser.userId}+'/'+${totalPages-1}"
                                 aria-label="Next">
                                 <span aria-hidden="true">&raquo;&raquo;</span>
                                 <span class="sr-only">Last</span>
@@ -437,20 +284,22 @@
                             src="https://cdn.dribbble.com/users/888330/screenshots/2653750/empty_data_set.png" alt="">
                     </span>
                 </nav>
+
                 <!-- pagination -->
 
-
-
             </div>
+
 
         </div>
     </div>
 
 
 
+
     <script src="/js/userProfile.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+
 
 </body>
 

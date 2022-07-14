@@ -32,6 +32,8 @@ public class UserCommentController {
     @PostMapping("/save/userComment/{postId}/{page}")
     public String saveUserCommentData(@PathVariable("postId") Long postId, @PathVariable("page") Long page,
             @RequestParam(required = false, name = "categoryName") String categoryName,
+            @RequestParam(required = false, name = "profileComment") String profileComment,
+            @RequestParam(required = false, name = "userId") String unknownUserId,
             @ModelAttribute("UserComment") UserComment userComment, RedirectAttributes redirectAttributes,
             Principal principal) {
 
@@ -64,6 +66,14 @@ public class UserCommentController {
         redirectAttributes.addAttribute("posterrorMessage", "Commented !!");
         // for staying same location after commenting and reloading
         redirectAttributes.addAttribute("categoryName", categoryName);
+
+        if(profileComment.equals("profileComment") ){
+            return "redirect:/profile/userProfile/0";
+        }
+
+        if(profileComment.equals("unknownprofileComment")){
+            return "redirect:/profile/unknownUserProfile/"+unknownUserId+"/"+0;
+        }
 
         return "redirect:/post/home/" + page;
     }

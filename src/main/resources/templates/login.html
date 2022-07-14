@@ -31,23 +31,26 @@
                 <div class="card col-lg-4 offset-lg-4 my-4">
 
                     <!-- success message showing %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%-->
-                    <div class="alert alert-warning alert-dismissible fade show mt-2" role="alert"
-                        th:hidden="${signUpSuccess == ''}">
+                    <div class="alert alert-warning fade show p-1" role="alert" th:hidden="${signUpSuccess == ''}">
                         <strong>Great !</strong> <span th:text="${signUpSuccess}"></span>
                         <button type="button" class="close" data-dismiss="alert" aria-label="Close">
                             <span aria-hidden="true">&times;</span>
                         </button>
                     </div>
-
+                    <!-- LOGIN ERROR MESSAGE SHOWING!!!!!!!!!!!!!!!!!!!!!!! -->
+                    <div class="alert alert-warning fade show p-1" role="alert" th:if="${param.error}">
+                        User Name or Password invalid, please verify
+                        <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+                    </div>
 
                     <div class="card-body">
-                        <div class="sign form-group pt-3 pb-1">
+
+
+                        <div class="sign form-group  pb-1">
                             <h3><b>Sign in</b></h3>
                             <p class="text-secondary">Stay updated on your Educational world</p>
-                            <div align="center" th:if="${param.error}">
-                                <p style="font-size: 20; color: #FF1C19;">User Name or Password invalid, please verify
-                                </p>
-                            </div>
                         </div>
                         <!-- form is starting************************************************************* -->
                         <form th:action="@{/login}" method="post">
@@ -71,11 +74,6 @@
                         </form>
                     </div>
                 </div>
-                <!-- <div class="col-md-4 offset-md-4 ">
-                    <div class="form-group register_sec">
-                        <a th:href="@{/register/teacher}" class="btn btn-secondary">Register as a Teacher</a>
-                    </div>
-                </div> -->
             </div>
         </div>
 

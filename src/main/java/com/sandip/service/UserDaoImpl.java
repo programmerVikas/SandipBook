@@ -11,26 +11,29 @@ import org.springframework.stereotype.Service;
 
 @Service
 public class UserDaoImpl {
-    
+
     @Lazy
     @Autowired
     private UserDao uDao;
 
-// saving user register data********************************** 
-    public User saveUser(User user){
-       return uDao.save(user);
+    // saving user register data**********************************
+    public User saveUser(User user) {
+        return uDao.save(user);
     }
 
     // fetching all user from database*********************************
-    public List<User> GettingAllUser(){
+    public List<User> GettingAllUser() {
         return uDao.findAll();
     }
 
-
     // fetching data by email-id*******************************
-    public User userByEmail(String email){
+    public User userByEmail(String email) {
         return uDao.findByEmail(email);
     }
 
+    // fetching data by id
+    public User userById(Long id) {
+        return uDao.findByUserId(id);
+    }
 
 }

@@ -21,8 +21,10 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import com.sandip.entity.User;
+import com.sandip.entity.UserRole;
 import com.sandip.mailConfiguration.MailConfiguration;
 import com.sandip.service.UserDaoImpl;
+import com.sandip.service.UserRoleImpl;
 
 @Controller
 @RequestMapping("/user")
@@ -32,7 +34,8 @@ public class UserController {
     @Autowired
     private UserDaoImpl userDaoImpl;
 
-   
+    @Autowired
+    private UserRoleImpl userRoleImpl;
 
     // mail sending wiring************************************
     @Autowired
@@ -133,11 +136,11 @@ public class UserController {
         user.setRegistereddAt(formattedDate);
 
         // getting user data and setting data in user role object
-        // UserRole userRole = new UserRole();
-        // userRole.setRoleId(userRoleImpl.gettingUserRole(role).getRoleId());
+        UserRole userRole = new UserRole();
+        userRole.setRoleId(userRoleImpl.gettingUserRole("normal").getRoleId());
 
         // setting user role data in user object
-        // user.setUser_role(userRole);
+        user.setUser_role(userRole);
 
         // saving signup data in
         // database*************************************************
@@ -145,7 +148,7 @@ public class UserController {
 
         redirectAttributes.addAttribute("signUpSuccess", "Sign up successfully");
         // going back on signin/login page
-        return "redirect:/";
+        return "redirect:/login";
 
     }
 
