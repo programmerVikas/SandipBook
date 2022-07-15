@@ -26,13 +26,13 @@
                     <div class="profile mr-3"><img
                             th:src="${unknownUser.profilePic != null}?'/profilePictures/'+${unknownUser.profilePic}:'/images/userProfileImages.jpg'"
                             alt="..." width="130" class="rounded mb-2 img-thumbnail img-fluid">
-                        <h4><span class="badge d-block badge-secondary" th:text="${unknownUser.user_role.role}"></span>
+                        <h4><span class="badge d-block badge-secondary" th:text="${#strings.capitalize(unknownUser.user_role.role)}"></span>
                         </h4>
                     </div>
                     <div class="media-body mb-5 text-white">
 
                         <h4 class="mt-0 mb-0"
-                            th:text="${unknownUser.firstName}+' '+(${unknownUser.lastName != null}?${unknownUser.lastName}:'')">
+                            th:text="${#strings.capitalize(unknownUser.firstName)}+' '+(${unknownUser.lastName != null}?${#strings.capitalize(unknownUser.lastName)}:'')">
                         </h4>
                         <p class="small mb-4"> <i class="fa fa-map-marker mr-2"></i><span
                                 th:text="${unknownUser.branch != null}?${unknownUser.branch.branchName}"></span></p>
@@ -65,13 +65,13 @@
                         <!-- showing user data -->
                         <span class="user_details">
                             <p class="bg-light p-2"><b>Username : </b> <span
-                                    th:text="${unknownUser.firstName}+' '+${unknownUser.lastName}"></span>
+                                    th:text="${#strings.capitalize(unknownUser.firstName)}+' '+${#strings.capitalize(unknownUser.lastName)}"></span>
                             </p>
                             <p class="bg-light p-2"
                                 th:if="${logUser.user_role.role == 'teacher' || logUser.user_role.role == 'admin'}">
                                 <b>Email : </b><span th:text="${unknownUser.email}"></span>
                             </p>
-                            <p class="bg-light p-2"><b>Course : </b><span
+                            <p class="bg-light p-2 "><b>Course : </b><span
                                     th:text="${unknownUser.course != null}?${unknownUser.course.courseName}"></span>
                             </p>
                             <p class="bg-light p-2"><b>Branch : </b><span
@@ -105,7 +105,7 @@
                         </a>
                         <div class="ml-2" style="line-height: 13px; font-size: small;">
                             <h6 class=" mb-0" style="color: rgb(90, 77, 77);"
-                                th:text="${userPostData.user.firstName}+' '+(${userPostData.user.lastName != null}?${userPostData.user.lastName}:'')">
+                                th:text="${#strings.capitalize(userPostData.user.firstName)}+' '+(${userPostData.user.lastName != null}?${#strings.capitalize(userPostData.user.lastName)}:'')">
                             </h6>
                             <small class="text-secondary"
                                 th:text="${userPostData.user.branch == null} ? 'Complete your profile first !!':${userPostData.user.branch.branchName}"></small>
@@ -181,7 +181,7 @@
                             method="post">
                             <div class="card-body ">
                                 <span style="display: flex;">
-                                    <a class="" href="#">
+                                    <a class="" th:href="@{/profile/userProfile/0}">
                                         <img th:src="${logUser.profilePic != null}?'/profilePictures/'+${logUser.profilePic}:'/images/userProfileImages.jpg'"
                                             class="rounded-circle img-fluid" style="width: 42px;" />
                                     </a>
@@ -200,7 +200,7 @@
 
                         <div class="card-body">
                             <span class="mb-0" style="display: flex;" th:each="commentData: ${userPostData.comments}">
-                                <a class="" href="#">
+                                <a class="" th:href="@{/profile/unknownUserProfile/}+${commentData.user.userId}+@{/0}">
                                     <img th:src="${commentData.user.profilePic != null}?'/profilePictures/'+${commentData.user.profilePic}:'/images/userProfileImages.jpg'"
                                         class="rounded-circle img-fluid" style="width: 42px;" />
                                 </a>

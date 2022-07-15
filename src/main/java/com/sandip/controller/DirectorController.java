@@ -21,6 +21,12 @@ public class DirectorController {
     public String goToRegister(Model model) {
         return "register";
     }
+   
+    // going on registration page.........
+    @RequestMapping("/forgotPassword")
+    public String goToForgotPassword(Model model) {
+        return "forgotPassword";
+    }
 
 
 

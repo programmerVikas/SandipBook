@@ -51,5 +51,10 @@ public class UserPostImpl {
         userPostDao.deleteById(id);
     }
 
+    // get post by user
+    public UserPost getPostById(Long id){
+        return userPostDao.findByPostId(id);
+    }
+
 
 }

@@ -15,7 +15,7 @@
 
 <body>
 
-    <div class="bg-light">
+    <div class="bg-light" >
 
         <div class="container" th:fragment="postNavbar">
 
@@ -35,7 +35,7 @@
                         <a class="navbar-toggler text-center" th:href="@{/profile/userProfile/0}" style="border: none;">
                             <img th:src="${logUser.profilePic != null}?'/profilePictures/'+${logUser.profilePic}:'/images/userProfileImages.jpg'"
                                 class="rounded-circle img-fluid" style="width: 40px;" />
-                            <p class="font-weight-bold mt-1 mb-0">Profile</p>
+                            <p class="font-weight-bold mt-1 mb-0" th:text="${#strings.capitalize(logUser.firstName)}+' '+(${logUser.lastName != null}?${#strings.capitalize(logUser.lastName)}:'')"></p>
                         </a>
 
                         <!-- printing only 7 list data in navbar -->
@@ -75,7 +75,7 @@
             <div class="col-sm-3 ">
                 <!-- profile start -->
 
-                <div class="card bg-light user_profile" style="border-radius: 15px;">
+                <div class="card shadow bg-light user_profile" style="border-radius: 15px;">
                     <div class="card-body text-center">
                         <div class="mt-3 mb-3">
                             <a th:href="@{/profile/userProfile/0}">
@@ -86,13 +86,10 @@
                         </div>
                         <h6 class="mb-1">
                             <a th:href="@{/profile/userProfile/0}"
-                                th:text="${logUser.firstName}+' '+(${logUser.lastName != null}?${logUser.lastName}:'')"></a>
+                                th:text="${#strings.capitalize(logUser.firstName)}+' '+(${logUser.lastName != null}?${#strings.capitalize(logUser.lastName)}:'')"></a>
                         </h6>
-                        <p class="text-muted title">
-                            Fresher Java Developer || Java || Spring boot || MySql || Angular || Hibernate ||
-                            HTML
-                            || CSS || Good Communication Skill
-                        </p>
+                        <p class="title font-weight-bold text-muted prn mt-2"
+                            th:text="${logUser.branch != null}?${logUser.branch.branchName}:'Set your branch'"></p>
                         <hr>
                         <p class="title font-weight-bold text-muted prn"
                             th:text="${logUser.prn != null}?${logUser.prn}:'Set your PRN'"></p> <br>
@@ -119,7 +116,7 @@
                 </div>
                 <!-- post module  started -->
 
-                <div class="card bg-light postInput mx-1">
+                <div class="card shadow bg-light postInput mx-1">
 
                     <div class="card-body">
 
@@ -131,8 +128,8 @@
                             </a>
                             <input class="form-control muted ml-3" aria-label="Large"
                                 aria-describedby="inputGroup-sizing-sm" type="text"
-                                th:placeholder="@{'Whats on your mind, '+${logUser.firstName}+' ?'}" readonly data-toggle="modal"
-                                data-target="#exampleModal">
+                                th:placeholder="@{'Whats on your mind, '+${logUser.firstName}+' ?'}" readonly
+                                data-toggle="modal" data-target="#exampleModal">
                         </div>
 
                     </div>
@@ -167,7 +164,7 @@
                                         <div class="col-9 col-sm-10 text-left d-flex ">
                                             <span class="category_dropdown">
                                                 <h6 class="mb-1"
-                                                    th:text="${logUser.firstName}+' '+(${logUser.lastName != null}?${logUser.lastName}:'')">
+                                                    th:text="${#strings.capitalize(logUser.firstName)}+' '+(${logUser.lastName != null}?${#strings.capitalize(logUser.lastName)}:'')">
                                                 </h6>
                                                 <i class="fa fa-globe"></i>
                                                 <select class="selectInput pl-1" name="category" id="">
@@ -216,7 +213,7 @@
 
                 <!-- post module  ended -->
                 <!-- post content data is showing !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!! -->
-                <div class="card mb-3 paginationSecond" th:each="userPostData : ${postData}">
+                <div class="card shadow mb-3 paginationSecond" th:each="userPostData : ${postData}">
 
                     <div class="m-3" style="display: flex;">
                         <a class="" th:href="@{/profile/unknownUserProfile/}+${userPostData.user.userId}+@{/0}">
@@ -225,7 +222,7 @@
                         </a>
                         <div class="ml-2" style="line-height: 13px; font-size: small;">
                             <h6 class=" mb-0" style="color: rgb(90, 77, 77);"
-                                th:text="${userPostData.user.firstName}+' '+(${userPostData.user.lastName != null}?${userPostData.user.lastName}:'')">
+                                th:text="${#strings.capitalize(userPostData.user.firstName)}+' '+(${userPostData.user.lastName != null}?${#strings.capitalize(userPostData.user.lastName)}:'')">
                             </h6>
                             <small class="text-secondary"
                                 th:text="${userPostData.user.branch == null} ? 'Complete your profile first !!':${userPostData.user.branch.branchName}"></small>
@@ -303,7 +300,7 @@
                             method="post">
                             <div class="card-body ">
                                 <span style="display: flex;">
-                                    <a class="" href="#">
+                                    <a class="" th:href="@{/profile/userProfile/0}">
                                         <img th:src="${logUser.profilePic != null}?'/profilePictures/'+${logUser.profilePic}:'/images/userProfileImages.jpg'"
                                             class="rounded-circle img-fluid" style="width: 42px;" />
                                     </a>
@@ -322,7 +319,7 @@
 
                         <div class="card-body">
                             <span class="mb-0" style="display: flex;" th:each="commentData: ${userPostData.comments}">
-                                <a class="" href="#">
+                                <a class="" th:href="@{/profile/unknownUserProfile/}+${commentData.user.userId}+@{/0}">
                                     <img th:src="${commentData.user.profilePic != null}?'/profilePictures/'+${commentData.user.profilePic}:'/images/userProfileImages.jpg'"
                                         class="rounded-circle img-fluid" style="width: 42px;" />
                                 </a>
@@ -421,14 +418,14 @@
             </div>
             <div class="col-sm-3 rightcolcard">
 
-                <div class="card">
+                <div class="card shadow">
                     <span class="p-2" style="display: flex;">
                         <img class="img-fluid" style="width: 17%;" src="/images/Events-icon.png" alt="">
                         <h6 class="ml-3 text-success" style="margin-top: 10px;">Events / Seminar</h6>
                     </span>
                 </div>
 
-                <div class="card eventcard mt-4 text-center text-light ">
+                <div class="card shadow eventcard mt-4 text-center text-light ">
                     <span class="mt-3">
                         <h4>Seminar</h4>
                         <h5>03-07-2022</h5>

@@ -1,0 +1,317 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+
+<head>
+    <title>Search user post</title>
+    <div th:insert="commonfragment :: bootstrap"></div>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.2/css/all.min.css" />
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+    <link rel="stylesheet" th:href="@{/css/admin/admin.css}">
+
+    <!-- mapping CSS -->
+    <link rel="stylesheet" th:href="@{/css/postSpace/postHome.css}">
+    <link rel="stylesheet" th:href="@{/css/postSpace/userProfile.css}">
+
+</head>
+
+<body>
+
+
+    <div class="menu-wrapper">
+        <div class="sidebar-header">
+            <!-- here adminspace is a folder where admin page in which sidebar fragment is available -->
+            <div th:replace="adminSpace/admin :: sideBar"> </div>
+            <div class="backdrop"></div>
+
+            <!-- content body has started !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!! -->
+            <div class="content">
+                <div th:replace="adminSpace/admin :: sideBar2"> </div>
+                <div class="content-data">
+
+                    <form th:action="@{/admin/searchPostByMail/0}" method="post">
+                        <div class="row">
+                            <div class=" col-sm align-self-end offset-sm-4">
+                                <div class="input-group mb-3 shadow">
+                                    <input type="search" id="form1"
+                                        th:value="${userByEmail == null}?'':${userByEmail.email}" class="form-control"
+                                        name="email" placeholder="Search post by user EMAIL" />
+                                    <div class="input-group-append">
+                                        <button class="btn btn-primary px-4" type="submit"><i
+                                                class="fas fa-search"></i></button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </form>
+
+                    <div class="row">
+                        <div class="col-sm-4">
+
+                            <div class="card shadow" th:if="${userByEmail != null}">
+                                <div class="card-header text-center">
+                                    <h5 th:text="${userByEmail != null}?${userByEmail.email}"></h5>
+                                </div>
+                                <div class="card-body">
+
+                                    <form id="myform" th:action="@{/admin/updateUser}" method="post">
+
+                                        <div class="form-group">
+                                            <label for="exampleInputEmail1">Select your role</label>
+                                            <select class="form-control pl-1" name="user_role" id="">
+                                                <option selected
+                                                    th:value="${userByEmail == null}?'Select Role':${userByEmail.user_role.roleId}"
+                                                    th:text="${userByEmail == null}?'Select Role':${userByEmail.user_role.role}">
+                                                </option>
+                                                <span th:each="userRole : ${userRole}">
+                                                    <option th:value="${userRole.roleId}" th:text="${userRole.role}">
+                                                    </option>
+                                                </span>
+                                            </select>
+                                        </div>
+
+                                        <div class="form-group">
+                                            <label for="exampleInputEmail1">First name</label>
+                                            <input type="text" class="form-control" id="firstName"
+                                                aria-describedby="firstname" placeholder="Enter first name"
+                                                name="firstName"
+                                                th:value="${userByEmail != null}?${userByEmail.firstName}">
+                                            <!-- <small id="emailHelp" class="form-text text-muted">We'll never share your email with anyone else.</small> -->
+                                        </div>
+                                        <div class="form-group">
+                                            <label for="exampleInputEmail1">Last name</label>
+                                            <input type="text" class="form-control" id="lastName"
+                                                aria-describedby="lastName" placeholder="Enter last name"
+                                                name="lastName"
+                                                th:value="${userByEmail != null}?${userByEmail.lastName}">
+                                            <!-- <small id="emailHelp" class="form-text text-muted">We'll never share your email with anyone else.</small> -->
+                                        </div>
+                                        <div class="form-group">
+                                            <label for="exampleInputEmail1">Email address</label>
+                                            <input type="text" readonly class="form-control" id="email"
+                                                aria-describedby="email" placeholder="Enter email address" name="email"
+                                                th:value="${userByEmail != null}?${userByEmail.email}">
+                                        </div>
+
+                                        <div class="form-group">
+                                            <label for="exampleInputEmail1">Course</label>
+                                            <select class="form-control pl-1" name="course" id="">
+
+                                                <option selected
+                                                    th:value="${userByEmail != null}?(${userByEmail.course != null}? ${userByEmail.course.courseId})"
+                                                    th:text="${userByEmail != null}?(${userByEmail.course != null}? ${userByEmail.course.courseName}:'select branch course')">
+                                                </option>
+
+                                                <span th:each="courseData : ${courseData}">
+                                                    <option th:value="${courseData.courseId}"
+                                                        th:text="${courseData.courseName}"></option>
+                                                </span>
+                                            </select>
+                                            <!-- <small id="emailHelp" class="form-text text-muted">We'll never share your email with anyone else.</small> -->
+                                        </div>
+                                        <div class="form-group">
+                                            <label for="exampleInputEmail1">Branch</label>
+                                            <select class="form-control pl-1" name="branch" id="">
+
+                                                <option selected
+                                                    th:value="${userByEmail != null}?(${userByEmail.branch != null}?${userByEmail.branch.branchId})"
+                                                    th:text="${userByEmail != null}?(${userByEmail.branch != null}?${userByEmail.branch.branchName}:'Select Branch'):'Select Branch'">
+                                                </option>
+
+                                                <span th:each="branchData : ${branchData}">
+                                                    <option th:value="${branchData.branchId}"
+                                                        th:text="${branchData.branchName}"></option>
+                                                </span>
+                                            </select>
+
+                                        </div>
+                                        <div class="form-group">
+                                            <label for="exampleInputEmail1">Session</label>
+                                            <input type="text" class="form-control" id="session"
+                                                placeholder="For ex - 2018-22 " name="session"
+                                                th:value="${userByEmail != null}?${userByEmail.session}">
+
+                                        </div>
+                                        <div class="form-group">
+                                            <label for="exampleInputEmail1">AcademicYear</label>
+                                            <input type="number" class="form-control" id="AcademicYear"
+                                                placeholder="For ex - 4" name="AcademicYear"
+                                                th:value="${userByEmail != null}?${userByEmail.AcademicYear}">
+
+                                        </div>
+
+                                        <div class="form-group">
+                                            <label for="exampleInputEmail1">Prn</label>
+                                            <input type="text" class="form-control" id="Prn" placeholder="Enter prn no."
+                                                name="prn" th:value="${userByEmail != null}?${userByEmail.prn}">
+
+                                        </div>
+
+                                        <div class="form-group">
+                                            <label for="exampleInputEmail1">Address</label>
+                                            <input type="text" class="form-control" id="address"
+                                                placeholder="Enter your address" name="address"
+                                                th:value="${userByEmail != null}?${userByEmail.address}">
+
+                                        </div>
+
+                                        <div style="float: right;">
+                                            <button type="submit" class="btn btn-success">Save changes</button>
+                                        </div>
+                                    </form>
+
+                                </div>
+                            </div>
+
+                        </div>
+
+                        <div class="col-sm-8">
+
+                            <div class="card shadow mb-3" th:if="${userPostData != null}"
+                                th:each="userPostData : ${userPostData}">
+
+                                <div class="m-3" style="display: flex;">
+                                    <a class=""
+                                        th:href="@{/profile/unknownUserProfile/}+${userPostData.user.userId}+@{/0}">
+                                        <img th:src="${userPostData.user.profilePic != null}?'/profilePictures/'+${userPostData.user.profilePic}:'/images/userProfileImages.jpg'"
+                                            class="rounded-circle img-fluid" style="width: 45px;" />
+                                    </a>
+                                    <div class="ml-2" style="line-height: 13px; font-size: small;">
+                                        <h6 class=" mb-0" style="color: rgb(90, 77, 77);"
+                                            th:text="${#strings.capitalize(userPostData.user.firstName)}+' '+(${userPostData.user.lastName != null}?${#strings.capitalize(userPostData.user.lastName)}:'')">
+                                        </h6>
+                                        <small class="text-secondary"
+                                            th:text="${userPostData.user.branch == null} ? 'Complete your profile first !!':${userPostData.user.branch.branchName}"></small>
+                                        <br>
+                                        <small class="text-secondary" th:text="${userPostData.postOn}"></small>
+                                    </div>
+                                    <a th:href="@{'/admin/deletePostByUser/'+${userPostData.postId}+'/'+${userPostData.user.email}}"
+                                        class="ml-auto">
+                                        <button class=" btn btn-sm btn-light rounded-circle"><i class="fa fa-trash"
+                                                aria-hidden="true"></i></button>
+                                    </a>
+                                </div>
+
+
+
+                                <!-- content of the post -->
+                                <p class="mx-3 mb-0 show-read-more" style="font-size: 15px;"
+                                    th:text="${userPostData.post}"></p>
+                                <!-- content of the post end -->
+
+                                <a th:if="${!#strings.containsIgnoreCase(''+userPostData.photo,'.pdf') && userPostData.photo != null}"
+                                    target="_blank" th:href="('/uploadedImages/'+${userPostData.photo})"
+                                    style="background: transparent url(https://miro.medium.com/max/1400/1*CsJ05WEGfunYMLGfsT2sXA.gif) no-repeat center; background-size: 70% 50%;">
+                                    <img class="img-fluid w-100 mb-0" th:src="'/uploadedImages/'+${userPostData.photo}"
+                                        onerror="this.onerror=null; this.src='https://miro.medium.com/max/1400/1*zE2qnVTJehut7B8P2aMn3A.gif'"
+                                        alt="">
+                                </a>
+
+
+                                <span class="embedfile mb-0"
+                                    th:if="${#strings.containsIgnoreCase(''+userPostData.photo,'.pdf')}">
+
+                                    <object th:if="${#strings.containsIgnoreCase(''+userPostData.photo,'.pdf')}"
+                                        class="w-100 mb-0"
+                                        th:data="('/uploadedImages/'+${userPostData.photo}+'#toolbar=0')"
+                                        type="application/pdf" height="500"
+                                        style="background: transparent url(https://miro.medium.com/max/1400/1*CsJ05WEGfunYMLGfsT2sXA.gif) no-repeat center; background-size: 70% 50%;">
+                                        <p class="p-3 ">Your web browser doesn't have a PDF plugin. <br>
+                                            <b class="text-light "
+                                                th:text="${#strings.replace(userPostData.photo,#strings.substring(userPostData.photo, 0),#strings.substring(userPostData.photo, #strings.indexOf(userPostData.photo,'@Books')+6))}"></b>
+
+                                            <br>
+                                            <a class="btn btn-success mt-3" target="_blank"
+                                                th:href="('/uploadedImages/'+${userPostData.photo}+'#toolbar=0')">Click
+                                                here to
+                                                download the PDF file</a>
+                                        </p>
+                                    </object>
+
+                                </span>
+
+                            </div>
+
+                            <!-- pagination !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!-->
+                            <nav aria-label="Page navigation example" class="table-responsive my-2 p-2"
+                                th:if="${currentPage != null}">
+                                <ul class="pagination nav justify-content-center" th:if="${totalPages != 0}">
+                                    <li th:if="${currentPage != 0}" class="page-item" title="First">
+                                        <a class="page-link" href="#"
+                                            th:href="@{'/admin/searchPostByMail/'+${0}+'?email='+${userByEmail.email}}"
+                                            aria-label="Previous">
+                                            <span aria-hidden="true">&laquo;&laquo;</span>
+                                            <span class="sr-only">First</span>
+                                        </a>
+                                    </li>
+                                    <li th:if="${currentPage != 0}" class="page-item" title="Previous">
+                                        <a class="page-link" href="#"
+                                            th:href="@{'/admin/searchPostByMail/'+${currentPage-1}+'?email='+${userByEmail.email}}"
+                                            aria-label="Previous">
+                                            <span aria-hidden="true">&laquo;</span>
+                                            <span class="sr-only">Previous</span>
+                                        </a>
+                                    </li>
+
+
+
+                                    <!-- numbering of pages!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!! -->
+                                    <li th:classappend="${currentPage == i-1}?'active':''"
+                                        th:each="i : ${#numbers.sequence(1,totalPages)}" class="page-item"><a
+                                            class="page-link"
+                                            th:href="@{'/admin/searchPostByMail/'+${i-1}+'?email='+${userByEmail.email}}"><span
+                                                th:text="${i}"></span></a></li>
+
+
+
+
+                                    <li th:if="${currentPage+1 != totalPages}" class="page-item" title="Next">
+                                        <a class="page-link" href="#"
+                                            th:href="@{'/admin/searchPostByMail/'+${currentPage+1}+'?email='+${userByEmail.email}}"
+                                            aria-label="Next">
+                                            <span aria-hidden="true">&raquo;</span>
+                                            <span class="sr-only">Next</span>
+                                        </a>
+                                    </li>
+
+                                    <li th:if="${currentPage+1 != totalPages}" class="page-item" title="Last">
+                                        <a class="page-link" href="#"
+                                            th:href="@{'/admin/searchPostByMail/'+${totalPages-1}+'?email='+${userByEmail.email}}"
+                                            aria-label="Next">
+                                            <span aria-hidden="true">&raquo;&raquo;</span>
+                                            <span class="sr-only">Last</span>
+                                        </a>
+                                    </li>
+                                </ul>
+                                <span class="mt-5" th:unless="${totalPages != 0}">
+                                    <img class="img-fluid"
+                                        src="https://cdn.dribbble.com/users/888330/screenshots/2653750/empty_data_set.png"
+                                        alt="">
+                                </span>
+                            </nav>
+                            <!-- pagination -->
+
+                            <div class="mt-5 text-center" th:unless="${userPostData != null}">
+                                <img class="img-fluid"
+                                    src="https://cdn.dribbble.com/users/888330/screenshots/2653750/empty_data_set.png"
+                                    alt="">
+                            </div>
+
+                        </div>
+
+                    </div>
+
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+    <script th:src="@{/js/admin.js}"></script>
+    <script th:src="@{/js/searchUserPost.js}"></script>
+
+    <script src="/js/userProfile.js"></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+
+</body>
+
+</html>

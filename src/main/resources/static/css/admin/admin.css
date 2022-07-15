@@ -220,11 +220,14 @@ header h1 {
 @media(max-width:700px) {
 
     .content-data {
-        background: url("https://i.pinimg.com/originals/0f/2a/b7/0f2ab76a07d6f557fe30fa688b52b423.jpg");
+        /* background: url("https://i.pinimg.com/originals/0f/2a/b7/0f2ab76a07d6f557fe30fa688b52b423.jpg"); */
         background-size: 100% 100%;
         background-position: center;
         background-repeat: no-repeat;
+    }
 
+    .content-data img{
+        width: 60vw;
     }
 
     .sideBar {
@@ -251,3 +254,13 @@ header h1 {
         width: 80%;
     }
 }
+
+
+/* .admin_content_data{
+
+    background-image: url(/images/logo.png);
+    background-position: center;
+    background-repeat: no-repeat;
+    background-size: 35% 30%;
+
+} */

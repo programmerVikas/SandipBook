@@ -11,7 +11,7 @@
 
     <link rel="stylesheet" th:href="@{/css/admin/admin.css}">
 
-   
+
 </head>
 
 <body>
@@ -19,19 +19,25 @@
     <div class="menu-wrapper">
         <div class="sidebar-header">
             <div class="sideBar" th:fragment="sideBar">
-                <div class="py-3"><img class="img-fluid" src="/images/logo.png" /></div>
+                <div class="py-3">
+                    <a th:href="@{/post/home/0}">
+                        <img class="img-fluid" src="/images/logo.png" />
+                    </a>
+                </div>
                 <ul>
                     <li th:class="${select}+' li'"><a th:href="@{/admin/home}"><i class="fas fa-home"></i>
                             <span>Home</span></a></li>
                     <li th:class="${select1}+' li'"><a th:href="@{/admin/branch/0}"><i class="fas fa-code-branch"></i>
                             <span>Add
                                 Course's Branch</span></a></li>
-                    <li th:class="${select2}+' li'"><a th:href="@{/admin/course/0}"><i class="fab fa-discourse"></i> <span>Add
+                    <li th:class="${select2}+' li'"><a th:href="@{/admin/course/0}"><i class="fab fa-discourse"></i>
+                            <span>Add
                                 Course</span></a></li>
-                    <li th:class="${select3}+' li'"><a th:href="@{/admin/category/0}"><i class="fas fa-plus"></i> <span>Add
+                    <li th:class="${select3}+' li'"><a th:href="@{/admin/category/0}"><i class="fas fa-plus"></i>
+                            <span>Add
                                 Post
                                 Category</span></a></li>
-                    <li class="li"><a><i class="fas fa-user"></i> <span>About us</span></a></li>
+                    <li th:class="${select4}+' li'"><a th:href="@{/admin/searchPost}"><i class="fas fa-user"></i> <span>Search userPost </span></a></li>
                     <li class="li"><a><i class="fas fa-cog"></i> <span>Setting</span></a></li>
                 </ul> <span class="cross-icon"><i class="fas fa-times"></i></span>
             </div>
@@ -50,12 +56,13 @@
                         <div></div>
                     </div>
                     <h1>SandipBook</h1>
-                    <img src=https://icons.veryicon.com/png/o/business/multi-color-financial-and-business-icons/user-139.png />
+                    <a th:href="@{/profile/userProfile/0}">
+                        <img th:src="${logUser.profilePic != null}?'/profilePictures/'+${logUser.profilePic}:'/images/userProfileImages.jpg'"
+                            class="rounded-circle img-fluid" style="width: 40px;" />
+                    </a>
                 </header>
-                <div class="content-data">
-                    Lorem ipsum dolor, sit amet consectetur adipisicing elit. Ex atque doloremque culpa suscipit.
-                    Possimus neque repudiandae culpa ratione id reiciendis porro! Consectetur a eius dolor deleniti est
-                    veritatis non quos.
+                <div class="content-data admin_content_data text-center">
+                    <img class="img-fluid mt-5" src="/images/logo.png" alt="">
                 </div>
             </div>
         </div>

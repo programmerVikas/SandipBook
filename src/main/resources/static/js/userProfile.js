@@ -153,7 +153,11 @@ var profileInput = document.getElementsByClassName("profileInput");
 var profileInputButton = document.getElementsByClassName("profileInputButton");
 
 $(profileInput).on('input change', function () {
-  $(profileInputButton).prop('disabled', false);
+  if ($(profileInput).val() != '' && jQuery.trim($(profileInput).val()) != '') {
+    $(profileInputButton).prop('disabled', false);
+  } else {
+    $(profileInputButton).prop('disabled', true);
+  }
 });
 
 // file upload Ending

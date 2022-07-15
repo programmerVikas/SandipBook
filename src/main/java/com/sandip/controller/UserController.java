@@ -15,6 +15,7 @@ import org.springframework.mail.MailAuthenticationException;
 // import java.util.Date;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -22,6 +23,7 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import com.sandip.entity.User;
 import com.sandip.entity.UserRole;
+import com.sandip.mailConfiguration.ForgotPasswordMailConfiguration;
 import com.sandip.mailConfiguration.MailConfiguration;
 import com.sandip.service.UserDaoImpl;
 import com.sandip.service.UserRoleImpl;
@@ -42,6 +44,9 @@ public class UserController {
     private MailConfiguration mailConfiguration;
     // mail sending wiring end************************************
 
+    @Autowired
+    private ForgotPasswordMailConfiguration forgotPasswordMailConfiguration;
+
     String name = "";
     String email = "";
     String password = "";
@@ -49,7 +54,6 @@ public class UserController {
     @RequestMapping(value = "/otpVerify", method = RequestMethod.POST)
     public String mailVerify(@RequestParam("firstName") String username, @RequestParam("email") String email,
             @RequestParam("password") String password, HttpServletRequest request, Model model) {
-
 
         this.name = username;
         this.email = email;
@@ -59,15 +63,13 @@ public class UserController {
         if (email == "") {
             model.addAttribute("errorMsg2", "Not valid !! ");
             return "register";
-        } else if(username == ""){
+        } else if (username == "") {
             model.addAttribute("errorMsg4", "Not valid !! ");
             return "register";
-        }
-        else if (password == "") {
+        } else if (password == "") {
             model.addAttribute("errorMsg3", "Not valid !! ");
             return "register";
-        } 
-        else if (password.length() < 6) {
+        } else if (password.length() < 6) {
             model.addAttribute("errorMsg3", "Password should be strong. password should be atleast 6 character long");
             return "register";
         }
@@ -101,7 +103,7 @@ public class UserController {
         } catch (MailAuthenticationException e) {
             model.addAttribute("errorMsg", "admin : mail AuthenticationFailed, check your less secure app ");
         } catch (Exception e) {
-            System.out.println("Lol "+e);
+            System.out.println("Lol " + e);
             model.addAttribute("errorMsg", "Already registered");
             // return "register";
         }
@@ -150,6 +152,35 @@ public class UserController {
         // going back on signin/login page
         return "redirect:/login";
 
+    }
+
+    @PostMapping("/forgotPassword")
+    public String forgotPassword(@RequestParam("email") String email, RedirectAttributes redirectAttributes,
+            Model model) {
+
+        if (email.equals("") || email == null) {
+            model.addAttribute("signUpSuccess", "Empty email field");
+            return "forgotPassword";
+        }
+
+        try {
+
+            User userByEmail = userDaoImpl.userByEmail(email);
+
+            if (userDaoImpl.checkEmailExist(email)) {
+
+                forgotPasswordMailConfiguration.sendPasswordMail(userByEmail.getPassword(), "Forgot Password", email);
+                redirectAttributes.addAttribute("signUpSuccess", "Check your mail !!");
+            } else {
+                model.addAttribute("signUpSuccess", "Given email doesn't exist !!");
+                return "forgotPassword";
+            }
+
+        } catch (Exception e) {
+            model.addAttribute("signUpSuccess", "Something is wrong !!");
+            return "forgotPassword";
+        }
+        return "redirect:/login";
     }
 
 }

@@ -23,7 +23,7 @@ public interface UserPostDao extends JpaRepository<UserPost, Long> {
     //getting post data by user
     public Page<UserPost> findByUser(User user, Pageable pageable);
 
-
+    public UserPost findByPostId(Long id);
     
 
 }

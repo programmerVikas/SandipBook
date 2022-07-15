@@ -36,4 +36,9 @@ public class UserDaoImpl {
         return uDao.findByUserId(id);
     }
 
+    // email exist or not
+    public boolean checkEmailExist(String email) {
+        return uDao.existsByEmail(email);
+    }
+
 }

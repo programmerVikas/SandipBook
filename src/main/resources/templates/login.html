@@ -31,7 +31,7 @@
                 <div class="card col-lg-4 offset-lg-4 my-4">
 
                     <!-- success message showing %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%-->
-                    <div class="alert alert-warning fade show p-1" role="alert" th:hidden="${signUpSuccess == ''}">
+                    <div class="alert alert-warning fade show p-1" role="alert" th:hidden="${signUpSuccess == '' || signUpSuccess == null}">
                         <strong>Great !</strong> <span th:text="${signUpSuccess}"></span>
                         <button type="button" class="close" data-dismiss="alert" aria-label="Close">
                             <span aria-hidden="true">&times;</span>
@@ -58,12 +58,12 @@
                                 <input class="form-control" name="email" type="text" placeholder="Email">
                             </div>
                             <div class="form-group">
-                                <input class="form-control" name="password" type="text" placeholder="Password">
+                                <input class="form-control" name="password" type="password" placeholder="Password">
                             </div>
 
                             <div class="form-group ">
                                 <button type="submit" class="btn btn-primary px-4 ">Sign in</button>
-                                <a href="#" class="">Forgot password?</a>
+                                <a href="/forgotPassword" class="">Forgot password?</a>
                             </div>
 
 

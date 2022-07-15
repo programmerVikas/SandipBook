@@ -1,8 +1,11 @@
 package com.sandip.controller.postController;
 
+import java.io.IOException;
 import java.security.Principal;
 import java.text.SimpleDateFormat;
 import java.util.Date;
+
+import javax.mail.MessagingException;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -16,8 +19,10 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 import com.sandip.entity.User;
 import com.sandip.entity.UserComment;
 import com.sandip.entity.UserPost;
+import com.sandip.mailConfiguration.UserCommentMailConfiguration;
 import com.sandip.service.UserCommentDaoImpl;
 import com.sandip.service.UserDaoImpl;
+import com.sandip.service.UserPostImpl;
 
 @Controller
 @RequestMapping("/comment")
@@ -29,6 +34,12 @@ public class UserCommentController {
     @Autowired
     private UserDaoImpl userDaoImpl;
 
+    @Autowired
+    private UserCommentMailConfiguration userCommentMailConfiguration;
+
+    @Autowired
+    private UserPostImpl userPostImpl;
+
     @PostMapping("/save/userComment/{postId}/{page}")
     public String saveUserCommentData(@PathVariable("postId") Long postId, @PathVariable("page") Long page,
             @RequestParam(required = false, name = "categoryName") String categoryName,
@@ -37,13 +48,11 @@ public class UserCommentController {
             @ModelAttribute("UserComment") UserComment userComment, RedirectAttributes redirectAttributes,
             Principal principal) {
 
-
         // getting current login user
         User logUser = userDaoImpl.userByEmail(principal.getName());
 
         // setting postId in userPost
-        UserPost userPost = new UserPost();
-        userPost.setPostId(postId);
+        UserPost userPost = userPostImpl.getPostById(postId);
         // set userpost in comment for you are commenting on what post
         // !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
         userComment.setPost(userPost);
@@ -67,12 +76,36 @@ public class UserCommentController {
         // for staying same location after commenting and reloading
         redirectAttributes.addAttribute("categoryName", categoryName);
 
-        if(profileComment.equals("profileComment") ){
-            return "redirect:/profile/userProfile/0";
+        if (profileComment != null) {
+            if (profileComment.equals("profileComment")) {
+                return "redirect:/profile/userProfile/0";
+            }
         }
 
-        if(profileComment.equals("unknownprofileComment")){
-            return "redirect:/profile/unknownUserProfile/"+unknownUserId+"/"+0;
+        try {
+            userCommentMailConfiguration.sendCommentMail(
+                    userComment.getComment(), "SandipBook-Comments",
+                    userPost.getUser().getEmail(), logUser.getEmail(),
+                    logUser.getFirstName() + " " +
+                            logUser.getLastName(),
+                    userPost.getPost() == null || userPost.getPost().equals("")
+                            ? userPost.getPhoto().substring(userPost.getPhoto().indexOf("@Books") + 6,
+                                    userPost.getPhoto().length())
+                            : userPost.getPost());
+        } catch (MessagingException e) {
+            // TODO Auto-generated catch block
+            e.printStackTrace();
+        } catch (IOException e) {
+            // TODO Auto-generated catch block
+            e.printStackTrace();
+        }
+
+        if (profileComment != null) {
+
+            if (profileComment.equals("unknownprofileComment")) {
+                return "redirect:/profile/unknownUserProfile/" + unknownUserId + "/" + 0;
+            }
+
         }
 
         return "redirect:/post/home/" + page;

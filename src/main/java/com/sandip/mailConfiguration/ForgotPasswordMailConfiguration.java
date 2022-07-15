@@ -11,19 +11,19 @@ import org.springframework.mail.javamail.MimeMessageHelper;
 import org.springframework.stereotype.Service;
 
 @Service
-public class MailConfiguration {
+public class ForgotPasswordMailConfiguration {
 
     @Autowired
     private JavaMailSender javaMailSender;
 
-    public void sendOTPMail(String message, String subject, String to) throws MessagingException, IOException {
+    public void sendPasswordMail(String message, String subject, String to) throws MessagingException, IOException {
 
         MimeMessage msg = javaMailSender.createMimeMessage();
 
         MimeMessageHelper helper = new MimeMessageHelper(msg, true);
         helper.setTo(to);
         helper.setSubject(subject);
-        helper.setText("Dear User,<p><br></p> Please enter given <b>OTP</b> to verify your account : <b>" + message
+        helper.setText("Dear User,<p><br></p> Your <b>password</b> is : <b>" + message
                 + "</b><p><br></p>Regards<br>SandipBook Team", true);
         // helper.addAttachment("my_photo.png", new ClassPathResource("android.png"));
         javaMailSender.send(msg);

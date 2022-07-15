@@ -22,13 +22,11 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.multipart.MultipartFile;
 
 import com.sandip.entity.User;
-import com.sandip.entity.UserComment;
 import com.sandip.entity.UserPost;
 import com.sandip.entity.UserRole;
 import com.sandip.service.BranchDaoImpl;
 import com.sandip.service.CategoryDaoImpl;
 import com.sandip.service.CourseDaoImpl;
-import com.sandip.service.UserCommentDaoImpl;
 import com.sandip.service.UserDaoImpl;
 import com.sandip.service.UserPostImpl;
 import com.sandip.service.UserRoleImpl;
@@ -59,10 +57,6 @@ public class UserProfileController {
     @Autowired
     private ProfileUploadHelper profileUploadHelper;
 
-    @Autowired
-    private UserCommentDaoImpl userCommentDaoImpl;
-
-
     @RequestMapping("/userProfile/{page}")
     public String userProfile(@PathVariable("page") int page, Model model, Principal principal) {
 
@@ -72,7 +66,6 @@ public class UserProfileController {
                 .collect(Collectors.toList());
 
         model.addAttribute("userRole", userRoleList);
-        System.out.println("size : " + userRoleList.size());
 
         // getting current login user
         User logUser = userDaoImpl.userByEmail(principal.getName());
@@ -169,50 +162,6 @@ public class UserProfileController {
 
         return "redirect:/profile/userProfile/0";
     }
-
-
-    // @PostMapping("/save/userProfileComment/")
-    // public String saveUserCommentData(@PathVariable("postId") Long postId,
-    //         @ModelAttribute("UserComment") UserComment userComment, Model model,
-    //         Principal principal) {
-
-
-    //     // getting current login user
-    //     User logUser = userDaoImpl.userByEmail(principal.getName());
-
-    //     // setting postId in userPost
-    //     UserPost userPost = new UserPost();
-    //     userPost.setPostId(postId);
-    //     // set userpost in comment for you are commenting on what post
-    //     // !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
-    //     userComment.setPost(userPost);
-
-    //     // setting userId in user for setting user in comment temporary
-    //     // !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
-    //     User user = new User();
-    //     user.setUserId(logUser.getUserId());
-    //     // set user in comment: who commented
-    //     userComment.setUser(user);
-
-    //     // save time in database
-    //     // new post set time and date------------------------------------
-    //     SimpleDateFormat dateFormat = new SimpleDateFormat("dd-MMM-yyyy 'at' hh:mm aa");
-    //     String formattedDate = dateFormat.format(new Date()).toString();
-
-    //     userComment.setCommentAt(formattedDate);
-
-    //     userCommentDaoImpl.saveComment(userComment);
-    //     // for staying same location after commenting and reloading
-
-    //     if(profileComment != null ){
-    //         return "redirect:/profile/userProfile/" + page;
-    //     }
-
-    //     return "redirect:/post/home/" + page;
-    // }
-
-
-
 
 
 }

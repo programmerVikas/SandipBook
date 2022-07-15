@@ -1,5 +1,6 @@
 package com.sandip.controller.adminController;
 
+import java.security.Principal;
 import java.util.Collections;
 import java.util.List;
 
@@ -19,9 +20,11 @@ import org.springframework.web.bind.annotation.RequestParam;
 import com.sandip.entity.Category;
 import com.sandip.entity.Course;
 import com.sandip.entity.CourseBranch;
+import com.sandip.entity.User;
 import com.sandip.service.BranchDaoImpl;
 import com.sandip.service.CategoryDaoImpl;
 import com.sandip.service.CourseDaoImpl;
+import com.sandip.service.UserDaoImpl;
 import com.sandip.sorting.SortingByCourseName;
 // import com.sandip.service.CourseDaoImpl;
 import com.sandip.staticData.ConstantData;
@@ -39,10 +42,20 @@ public class AdminController {
     @Autowired
     private BranchDaoImpl branchDaoImpl;
 
+    @Autowired
+    private UserDaoImpl userDaoImpl;
+
     // ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+
+    @ModelAttribute
+    public void commonData(Model model, Principal principal) {
+        User logUser = userDaoImpl.userByEmail(principal.getName());
+        model.addAttribute("logUser", logUser);
+    }
 
     @RequestMapping("/home")
     public String goToAdmin(Model model) {
+
         model.addAttribute("select", ConstantData.SELECT);
         return "adminSpace/admin";
     }
@@ -97,7 +110,7 @@ public class AdminController {
         // pagination has started !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
         Pageable pageable = PageRequest.of(page, ConstantData.PAGE_SIZE, Sort.by("cId").descending());
         Page<Category> pagecategoryDataList = categoryDaoImpl.gettingCategoryData(pageable);
-       
+
         model.addAttribute("categoryData", pagecategoryDataList);
         model.addAttribute("currentPage", page);
         model.addAttribute("totalPages", pagecategoryDataList.getTotalPages());
@@ -114,11 +127,10 @@ public class AdminController {
             @RequestParam(required = false, name = "branchcardtitle") String branchcardtitle,
             Model model) {
 
-
-
-         // setting the title of category card on the time of saving new data and
+        // setting the title of category card on the time of saving new data and
         // updating data
-        model.addAttribute("branchcardtitle", (branchcardtitle == null) ? ConstantData.BRANCH_CARD_TITLE : branchcardtitle);
+        model.addAttribute("branchcardtitle",
+                (branchcardtitle == null) ? ConstantData.BRANCH_CARD_TITLE : branchcardtitle);
 
         model.addAttribute("select1", ConstantData.SELECT);
 
@@ -138,6 +150,12 @@ public class AdminController {
         model.addAttribute("stayId", (id == 0) ? gettingCourseDataList.get(0).getCourseId() : id);
 
         return "adminSpace/addBranch";
+    }
+
+    @RequestMapping("/searchPost")
+    public String searchUserPost(Model model){
+        model.addAttribute("select4", ConstantData.SELECT);        
+        return "adminSpace/searchUserPost";
     }
 
 }
