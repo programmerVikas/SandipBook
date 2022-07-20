@@ -21,12 +21,14 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.multipart.MultipartFile;
 
+import com.sandip.entity.Event;
 import com.sandip.entity.User;
 import com.sandip.entity.UserPost;
 import com.sandip.entity.UserRole;
 import com.sandip.service.BranchDaoImpl;
 import com.sandip.service.CategoryDaoImpl;
 import com.sandip.service.CourseDaoImpl;
+import com.sandip.service.EventDaoImpl;
 import com.sandip.service.UserDaoImpl;
 import com.sandip.service.UserPostImpl;
 import com.sandip.service.UserRoleImpl;
@@ -57,6 +59,9 @@ public class UserProfileController {
     @Autowired
     private ProfileUploadHelper profileUploadHelper;
 
+    @Autowired
+    private EventDaoImpl eventDaoImpl;
+
     @RequestMapping("/userProfile/{page}")
     public String userProfile(@PathVariable("page") int page, Model model, Principal principal) {
 
@@ -86,6 +91,12 @@ public class UserProfileController {
         model.addAttribute("postData", findByUserDataPagination);
         model.addAttribute("currentPage", page);
         model.addAttribute("totalPages", findByUserDataPagination.getTotalPages());
+
+        // Getting event data
+        Pageable pageable2 = PageRequest.of(0, 10, Sort.by("eventId").descending());
+        Page<Event> findEventByUser = eventDaoImpl.findEventByUser(logUser, pageable2);
+        model.addAttribute("eventData", findEventByUser);
+        // Getting event data ending 
 
         return "postSpace/userProfile";
     }

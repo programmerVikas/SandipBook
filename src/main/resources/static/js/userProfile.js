@@ -162,3 +162,21 @@ $(profileInput).on('input change', function () {
 
 // file upload Ending
 
+// event form 
+// var profileInput = document.getElementsByClassName("profileInput");
+
+var eventFormInput = document.getElementsByClassName("eventFormInput");
+var eventButton = document.getElementsByClassName("eventButton");
+
+for (let i1 = 0; i1 < eventFormInput.length; i1++) {
+  $(eventFormInput[i1]).on('input change', function () {
+    if ($(eventFormInput[i1]).val() != '' && jQuery.trim($(eventFormInput[i1]).val()) != '') {
+      $(eventButton).prop('disabled', false);
+    } else {
+      $(eventButton).prop('disabled', true);
+    }
+  });
+}
+
+
+// event form ending

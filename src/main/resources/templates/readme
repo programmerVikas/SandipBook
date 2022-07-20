@@ -12,33 +12,22 @@
 
 Note ::: must do
 
-try to reverse list of data in course, category amd branch page
 
 -----------------------------------------------------------------------------
-admin pannel :
 
-apply register ang login page 
-valid user can login so make a module where super/main admin will add the another admin.
 ---------------------------------------------
-pdf is not showing on mobile view
-  --> show defualt meaage if pdf is not available on server
-set user in post after login
+
 fix 'public' category, no one can delete and edit 'public' category
 
 
 apply button on post and comment that they can delete hos own post and only 
-emoji is not allowed restriction apply on category,course and branch input (use eception handling)
 =-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-----=-=-=-=-=-=-=-=-=-=-
 
 
 sort the comment section
 
-some alignment error in user profile page 
 
-pdf is not working 
 
-delete post means delete photo as well from the server
+// Current Date !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
 
-working on admin panel
-
-style and scipt of post
+developer page

@@ -8,6 +8,7 @@
     padding: 0;
     list-style: none;
     box-sizing: border-box;
+    Font-family: sans-serif;
 }
 
 body {
@@ -226,7 +227,7 @@ header h1 {
         background-repeat: no-repeat;
     }
 
-    .content-data img{
+    .content-data img {
         width: 60vw;
     }
 

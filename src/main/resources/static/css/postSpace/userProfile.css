@@ -1,5 +1,11 @@
 @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@200;300;400;500;600;700&display=swap');
 
+
+*{
+  Font-family: sans-serif;
+}
+
+
 .profileCoverCard {
 
      /* height: 280px; */
@@ -10,15 +16,6 @@
      background-repeat: no-repeat;
  }
 
-
-
- /* max-width:600 */
- /* @media (max-width:600px) {
-
-     
-
-
- } */
 
  .profile-header {
     transform: translateY(5rem);

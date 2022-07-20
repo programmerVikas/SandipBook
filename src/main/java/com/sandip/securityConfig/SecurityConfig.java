@@ -29,6 +29,9 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 
 	@Override
 	protected void configure(HttpSecurity http) throws Exception {
+		// THIS IS FOR PDF AUTHORIZATION : OBJECT/IFRANE
+		http.headers().frameOptions().disable();
+		// THIS IS FOR PDF AUTHORIZATION : OBJECT/IFRANE ENDING	
 
 		http.authorizeRequests()
 				.antMatchers("/").permitAll()

@@ -129,3 +129,36 @@ $(document).ready(function () {
     $(this).remove();
   });
 });
+
+
+// delete event afetr passed date
+
+var deleteEvent = document.getElementsByClassName("deleteEvent");
+var eventDate = document.getElementsByClassName("eventDate");
+
+// for curent time
+var today = new Date();
+var date = today.getFullYear() + '-' + (today.getMonth() + 1) + '-' + today.getDate();
+var curDate = new Date(date);
+// for curent time ending
+
+
+for (let i1 = 0; i1 < deleteEvent.length; i1++) {
+
+  let dt = $(eventDate[i1]).text();
+
+  let eventdate2 = new Date(dt);
+  let eventdate3 = eventdate2.getFullYear() + '-' + (eventdate2.getMonth() + 1) + '-' + eventdate2.getDate();
+  var eventdate4 = new Date(eventdate3);
+
+  if (curDate > eventdate4) {
+    deleteEvent[i1].click();
+  } else {
+    console.log("No")
+  }
+
+
+  // $(deleteEvent[i1]).click();
+}
+
+// delete event afetr passed date ending...

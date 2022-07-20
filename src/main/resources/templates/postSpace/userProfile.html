@@ -142,7 +142,6 @@
                                     <select class="form-control pl-1" name="user_role" id="">
                                         <option selected th:value="${logUser.user_role.roleId}"
                                             th:text="${logUser.user_role.role}"></option>
-                                        <!-- th:each="categoryData : ${navbarCategoryData}" -->
                                         <span th:each="userRole : ${userRole}">
                                             <option th:value="${userRole.roleId}" th:text="${userRole.role}"></option>
                                         </span>
@@ -198,8 +197,6 @@
                                         </option>
 
                                         <span th:each="branchData : ${branchData}">
-                                            <!-- <option th:value="${categoryData.cId}"
-                                                th:text="${categoryData.categoryName}">One</option> -->
                                             <option th:value="${branchData.branchId}"
                                                 th:text="${branchData.branchName}"></option>
                                         </span>
@@ -241,6 +238,37 @@
 
                     </div>
                 </div>
+
+                <!-- event module is here !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!-->
+                <span th:if="${logUser.user_role.role == 'teacher' || logUser.user_role.role == 'admin'}">
+                    <div class="card shadow eventHeader">
+                        <span class="p-2" style="display: flex;">
+                            <img class="img-fluid" style="width: 10%;" src="/images/Events-icon.png" alt="">
+                            <h6 class="ml-3 text-success" style="margin-top: 10px;">Events / Seminar</h6>
+                        </span>
+                    </div>
+
+                    <div class="card shadow eventcard mt-4 mb-4  text-light " th:each="eventData : ${eventData}">
+                        <a th:href="@{/event/deleteEvent/}+${eventData.eventId}+'?eventCard=eventCardData'"
+                            class="ml-auto m-2">
+                            <button class=" btn btn-sm btn-primary rounded-circle"><i class="fa fa-trash"
+                                    aria-hidden="true"></i></button>
+                        </a>
+                        <span class="text-center mt-0">
+                            <h4 th:text="${#strings.capitalize(eventData.eventName)}"></h4>
+                            <h6 th:text="${#strings.capitalize(eventData.EventSpeaker)}"></h6>
+                            <h5 class="eventDate" th:text="${eventData.eventDate}"></h5>
+                            <h5 class="eventTime" th:text="${eventData.eventTime}"></h5>
+                            <p th:text="${#strings.capitalize(eventData.participant)}"></p>
+                        </span>
+
+                    </div>
+                    <span class="text-center text-secondary">
+                        <p class="mt-3">There are no more events...</p>
+                    </span>
+                </span>
+
+                
             </div>
 
             <!-- user post'list -->
@@ -248,51 +276,54 @@
 
                 <!-- Event card module -->
 
-                <div class="card shadow mb-3">
+                <div class="card shadow mb-3"
+                    th:if="${logUser.user_role.role == 'teacher' || logUser.user_role.role == 'admin'}">
                     <div class="card-header">
                         <h5> Add new event/seminar</h5>
                     </div>
                     <div class="card-body">
-                        <form action="">
+                        <form id="eventForm" th:action="@{/event/saveEvent}" method="post">
 
                             <div class="form-group">
                                 <label for="exampleInputEmail1">Event name</label>
-                                <input type="text" class="form-control" id="eventName" aria-describedby="firstname"
-                                    placeholder="Enter event name" name="eventName">
+                                <input type="text" class="form-control eventFormInput" id="eventName"
+                                    aria-describedby="firstname" placeholder="Enter event name" name="eventName"
+                                    required>
                             </div>
                             <div class="form-group">
                                 <label for="exampleInputEmail1">Speaker</label>
-                                <input type="text" class="form-control" id="speaker" aria-describedby="firstname"
-                                    placeholder="Enter speaker/guest name" name="speaker">
+                                <input type="text" class="form-control eventFormInput" id="speaker"
+                                    aria-describedby="firstname" placeholder="Enter speaker/guest name"
+                                    name="eventSpeaker" required>
                             </div>
 
                             <div class="form-row">
                                 <div class="col">
                                     <div class="form-group">
                                         <label for="exampleInputEmail1">Event Date</label>
-                                        <input type="date" class="form-control" id="eventDate"
-                                            aria-describedby="firstname" name="eventDate">
+                                        <input type="date" class="form-control eventFormInput" id="eventDate"
+                                            aria-describedby="firstname" name="eventDate" required>
                                     </div>
                                 </div>
                                 <div class="col">
                                     <div class="form-group">
                                         <label for="exampleInputEmail1">Event Time</label>
-                                        <input type="time" class="form-control" id="eventTime"
-                                            aria-describedby="firstname" name="eventTime">
+                                        <input type="time" class="form-control eventFormInput" id="eventTime"
+                                            aria-describedby="firstname" name="eventTime" required>
                                     </div>
                                 </div>
                             </div>
 
                             <div class="form-group">
                                 <label for="exampleInputEmail1">Who can participate</label>
-                                <textarea type="" class="form-control" id="eventTime" aria-describedby="firstname"
-                                    placeholder="for example (Students can participate from B.tech, Bca, ITI, Polytechnic)"
-                                    name="eventTime">
+                                <textarea class="form-control eventFormInput" name="participant" id="participant"
+                                    aria-label="With textarea" rows="2" placeholder="B.tech, Bca, ITI, Polytechnic"
+                                    required></textarea>
                             </div>
 
-
                             <div class="text-right">
-                                <button class="btn btn-primary shadow">Add event</button>
+                                <button type="submit" disabled class="btn btn-primary shadow eventButton">Add
+                                    event</button>
                             </div>
 
                         </form>
@@ -506,6 +537,8 @@
     </div>
 
 
+     <!-- footer  -->
+     <div th:insert="commonfragment :: copyrightFooter"></div>
 
     <script src="/js/userProfile.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>

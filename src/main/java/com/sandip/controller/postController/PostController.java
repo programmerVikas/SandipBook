@@ -20,9 +20,11 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
+import com.sandip.entity.Event;
 import com.sandip.entity.User;
 import com.sandip.entity.UserPost;
 import com.sandip.service.CategoryDaoImpl;
+import com.sandip.service.EventDaoImpl;
 import com.sandip.service.UserDaoImpl;
 import com.sandip.service.UserPostImpl;
 import com.sandip.staticData.FileUploadHelper;
@@ -43,9 +45,10 @@ public class PostController {
     @Autowired
     private UserDaoImpl userDaoImpl;
 
-    // @Autowired
-    // private User user;
+    @Autowired
+    private EventDaoImpl eventDaoImpl;
 
+    // getting user post!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
     @RequestMapping("/home/{page}")
     public String postHomePage(@PathVariable("page") Integer page,
             @RequestParam(required = false, name = "posterrorMessage") String posterrorMessage,
@@ -55,7 +58,6 @@ public class PostController {
         // getting current login user
         User logUser = userDaoImpl.userByEmail(principal.getName());
         model.addAttribute("logUser", logUser);
-
 
         // pagination has started !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
         Pageable pageable = PageRequest.of(page, 10, Sort.by("postId").descending());
@@ -72,6 +74,12 @@ public class PostController {
         model.addAttribute("posterrorMessage", posterrorMessage);
         // for getting post data on the basis of selected catyegory
         model.addAttribute("categoryName", categoryName == null ? "public" : categoryName);
+
+        // event data module
+        Pageable pageable2 = PageRequest.of(0, 10, Sort.by("eventId").descending());
+        Page<Event> findAllEventData = eventDaoImpl.findAllEvent(pageable2);
+        model.addAttribute("eventData", findAllEventData);
+        // event data module ending
 
         return "postSpace/postHome";
     }
@@ -95,7 +103,7 @@ public class PostController {
         userPost.setPostOn(formattedDate);
 
         // setting id in user temporary
-        User logUser = userDaoImpl.userByEmail(principal.getName()); //getting loing user and setting in user
+        User logUser = userDaoImpl.userByEmail(principal.getName()); // getting loing user and setting in user
         User um = new User();
         um.setUserId(logUser.getUserId());
         userPost.setUser(um);
