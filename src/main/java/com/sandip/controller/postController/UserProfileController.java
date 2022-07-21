@@ -1,5 +1,6 @@
 package com.sandip.controller.postController;
 
+import java.io.File;
 import java.security.Principal;
 import java.text.SimpleDateFormat;
 import java.time.LocalTime;
@@ -96,7 +97,7 @@ public class UserProfileController {
         Pageable pageable2 = PageRequest.of(0, 10, Sort.by("eventId").descending());
         Page<Event> findEventByUser = eventDaoImpl.findEventByUser(logUser, pageable2);
         model.addAttribute("eventData", findEventByUser);
-        // Getting event data ending 
+        // Getting event data ending
 
         return "postSpace/userProfile";
     }
@@ -139,6 +140,15 @@ public class UserProfileController {
 
         if (!file.isEmpty()) {
             try {
+
+                // deleting previous profile picture !!!!!!!!!!!!!!!!!!
+                if(logUser.getProfilePic() != null){
+                     // change the path when u are going to upload it on server, (set target path)
+                    File f = new File("G:/Sandip-Book/SandipBook/src/main/resources/static/profilePictures/"+logUser.getProfilePic()); // file to be delete
+                    f.delete();
+                }
+                // deleting previous profile picture end !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+
                 String uniqueName = LocalTime.now().toString().replace(':', '_').concat("@Books");
 
                 // setting file in userpost!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
@@ -166,13 +176,28 @@ public class UserProfileController {
         return "redirect:/profile/userProfile/0";
     }
 
+    // deleting post
     @RequestMapping("/deletePost/{id}")
     public String deletePostById(@PathVariable("id") Long id) {
+
+        UserPost postById = userPostImpl.getPostById(id);
+        String photo = postById.getPhoto();
+
+        // deleting file from server as well
+        if(photo != null){
+            try {
+                // change the path when u are going to upload it on server, (set target path)
+                File f = new File("G:/Sandip-Book/SandipBook/src/main/resources/static/uploadedImages/"+photo); // file to be delete
+                f.delete();
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+    
+        }
 
         userPostImpl.deletePostById(id);
 
         return "redirect:/profile/userProfile/0";
     }
-
 
 }
