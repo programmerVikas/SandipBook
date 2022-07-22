@@ -43,12 +43,12 @@ public class EventController {
 
 
     @RequestMapping("/deleteEvent/{id}")
-    public String deleteEventById(@PathVariable("id") Long id, @RequestParam("eventCard") String eventCard) {
+    public String deleteEventById(@PathVariable("id") Long id, @RequestParam(value = "null", defaultValue = "null") String eventCard) {
         
         eventDaoImpl.deleteEvent(id);
 
 
-        if(eventCard != null){
+        if(!eventCard.equals("null")){
             return "redirect:/profile/userProfile/0";
         }
 
